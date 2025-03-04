@@ -1,0 +1,293 @@
+.card-title {
+    color: #000;
+    font-family: Montserrat;
+    font-size: 20.627px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.button-group {
+    display: flex;
+    border-radius: 16px;
+    overflow: hidden;
+    background-color: #e0e0e0;
+    padding: 4px;
+    width: 100%;
+}
+
+.btn {
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    background-color: transparent;
+    color: #000;
+    width: 50%;
+}
+
+.btn.active {
+    background-color: #000;
+    color: #fff;
+    border-radius: 16px;
+}
+
+.due-date-text {
+    color: #000;
+    font-family: Montserrat;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.progress-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+    width: 100%;
+}
+
+.progress-marker {
+    position: absolute;
+    top: -26px;
+    /* Để chấm tròn nhô lên trên */
+    left: 0;
+    // width: 12px;
+    // height: 12px;
+
+    // border: 2px solid red;
+    // border-radius: 50%;
+    z-index: 20;
+}
+
+.progress-bar {
+    display: flex;
+    height: 8px;
+    width: 100%;
+    // border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-section {
+    height: 100%;
+}
+
+.green {
+    background-color: #76c7c0;
+    width: 60%;
+    /* Độ dài của phần màu xanh */
+}
+
+.yellow {
+    background-color: #ffeb3b;
+    width: 20%;
+    /* Độ dài của phần màu vàng */
+}
+
+.red {
+    background-color: #f44336;
+    width: 20%;
+    /* Độ dài của phần màu đỏ */
+}
+
+.red-icon {
+    color: red;
+}
+
+.dept-money-text {
+    color: #000;
+    font-family: Montserrat;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.description-text {
+    color: rgba(0, 0, 0, 0.50);
+    font-family: Montserrat;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.card-top {
+    // display: flex;
+    // justify-content: center;
+    padding: 14px;
+    height: 154.7px;
+    background-color: red;
+    border-radius: 20.627px;
+    background: url(https://s3-alpha-sig.figma.com/img/742a/c358/2b2e353c266f43c3c96f604c750c6dfd?Expires=1742169600&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=GJ1zDVdf3FdjigOyV8MaYEgaBPGr02rOXj8faQI1o3FIwCGJ9iWcGhSDldjuOrEZhrsdDxNnIPKS2wTSqunGN4lP8ng98VEckcOfGw9NRZFjydCoMAIjVdWHw-ggTwtT7kxocCGS8x6DYkKEdyNJau-o0PrlpMxLhNKy5Kq4BoLfTQtFGvCWHacIeavgfqa9bq5f-DRUZXbsjS6tSq~xmwo3NsQBuE7b6jRo2niymhZ7IDov4-LyV~Hofa0XKGpoE6wLtbnJyREdl3FSQsJugVu3E8VzEZ-GeOOravhIFCMsMMnKUPnmu1~xG74ZPEQL2KNLEcMdBMBW69CYENaDsw__) lightgray 50% / cover no-repeat;
+    box-shadow: 0px 51.566px 103.133px 0px rgba(226, 119, 71, 0.25), 0px 36.688px 20.627px 0px rgba(168, 84, 182, 0.08), 0px 15.238px 13.197px 0px rgba(0, 0, 0, 0.07), 0px 5.511px 3.419px 0px rgba(0, 0, 0, 0.05);
+    position: relative;
+}
+
+.card-top-main {
+    // position: absolute;
+    // top: -50px;
+    // left: 0;
+    width: 100%;
+    padding: 0 10px;
+    margin-top: 10px;
+}
+
+.name-bank-main {
+    // position: absolute;
+    // top: 14px;
+    // right: 14px;
+}
+
+.name-bank {
+    color: #FFF;
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    color: #FFF;
+    font-size: 12px;
+}
+
+.logo-bank-main {
+    margin-top: 8px;
+    // margin-left: 8px;
+    // position: absolute;
+    // top: 20px;
+    // left: 28px;
+}
+
+.number-card-main {
+    margin-top: 8px;
+    // position: absolute;
+    // top: 70px;
+    // left: 28px;
+}
+
+.number-card {
+    color: rgba(255, 255, 255, 0.70);
+    font-family: Montserrat;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.logo-master-card-main {
+    position: absolute;
+    top: 100px;
+    right: 24px;
+}
+
+.master-card-text {
+    color: #FFF;
+    font-family: Montserrat;
+    font-size: 10px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.card-top-new {
+    // display: flex;
+    // justify-content: center;
+    padding: 14px;
+    height: 154.7px;
+    background-color: red;
+    border-radius: 20.627px;
+    background: #E1DDDD;
+    box-shadow: 0px 51.566px 103.133px 0px rgba(226, 119, 71, 0.25), 0px 36.688px 20.627px 0px rgba(168, 84, 182, 0.08), 0px 15.238px 13.197px 0px rgba(0, 0, 0, 0.07), 0px 5.511px 3.419px 0px rgba(0, 0, 0, 0.05);
+    position: relative;
+}
+
+.card-top-new:hover {
+    background:url(https://s3-alpha-sig.figma.com/img/742a/c358/2b2e353c266f43c3c96f604c750c6dfd?Expires=1739145600&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=J2H-ZcYjDL7V1k9S5CJiO4atFaGOxUrxdy4oeioiTTm3~ZV9c6poUZ7zTFx0eYlwGqaoml6wGBoeXv~CQ9N4NuHFFBiHbbue-oGRXUlMlr1shdkn1lLF91SJ~mNLPulxZnq~e0gAr5~4NUjmjlR~88ccTL0oesuyUKRGOHSO4K67BpNxxiBmMqdCP~PCQWVdb9iucomyTidpum-xCFo1xld6TzPxBN7mFZJT0tQWaeayu8sIJVOva9PdgGuXqqqARaOcZgpVJNQ-~Anv2lkxNMsywGfB569rxRfQQPMcHeQ-7IiTjsgwVzreL6o-6kZs-PA4mXEYHyig~WFXHrX5XQ__) lightgray 50% / cover no-repeat;
+}
+
+// .card-top {
+//     // display: flex;
+//     // justify-content: center;
+//     padding: 14px;
+//     height: 154.7px;
+//     background-color: red;
+//     border-radius: 20.627px;
+//     background: url(https://s3-alpha-sig.figma.com/img/742a/c358/2b2e353c266f43c3c96f604c750c6dfd?Expires=1739145600&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=J2H-ZcYjDL7V1k9S5CJiO4atFaGOxUrxdy4oeioiTTm3~ZV9c6poUZ7zTFx0eYlwGqaoml6wGBoeXv~CQ9N4NuHFFBiHbbue-oGRXUlMlr1shdkn1lLF91SJ~mNLPulxZnq~e0gAr5~4NUjmjlR~88ccTL0oesuyUKRGOHSO4K67BpNxxiBmMqdCP~PCQWVdb9iucomyTidpum-xCFo1xld6TzPxBN7mFZJT0tQWaeayu8sIJVOva9PdgGuXqqqARaOcZgpVJNQ-~Anv2lkxNMsywGfB569rxRfQQPMcHeQ-7IiTjsgwVzreL6o-6kZs-PA4mXEYHyig~WFXHrX5XQ__) lightgray 50% / cover no-repeat;
+//     box-shadow: 0px 51.566px 103.133px 0px rgba(226, 119, 71, 0.25), 0px 36.688px 20.627px 0px rgba(168, 84, 182, 0.08), 0px 15.238px 13.197px 0px rgba(0, 0, 0, 0.07), 0px 5.511px 3.419px 0px rgba(0, 0, 0, 0.05);
+//     position: relative;
+// }
+
+.card-top-main-new {    
+    width: 100%;
+    padding: 0 40px;
+}
+
+.logo-bank-main-new {
+    // position: absolute;
+    // top: 20px;
+    // left: 20px;
+}
+
+.number-card-main-new {
+    // position: absolute;
+    // top: 50px;
+    // left: 28px;
+}
+
+.main-card-new{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+
+
+
+.transaction-list {
+    max-height: 140px; /* Chiều cao tối đa, bạn có thể điều chỉnh */
+    overflow-y: auto; /* Kích hoạt thanh cuộn dọc */
+    padding-right: 8px; /* Tránh che mất nội dung bởi thanh cuộn */
+}
+
+/* Tùy chỉnh thanh cuộn cho trình duyệt hỗ trợ */
+.transaction-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.transaction-list::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 3px;
+}
+
+
+owl-carousel-o {
+    display: block;
+    width: 100%;
+    max-width: 800px;
+    margin: auto;
+  }
+  
+  .carousel-img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+  }
+
+  owl-carousel-o {
+    display: block;
+    width: 100%;
+    max-width: 1024px;  // Điều chỉnh kích thước tối đa tại đây
+    margin: auto;
+}
+
+
+
+
+
+
+
+ 

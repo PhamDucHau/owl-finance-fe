@@ -1,0 +1,274 @@
+<div class="m-t-24 d-flex justify-content-center overlay" *ngIf="loadingSpinner">
+    <mat-spinner></mat-spinner>
+</div>
+
+<div class="row" style="padding: 60px 0">
+    <owl-carousel-o [options]="customOptions" class="owl-theme">
+        <ng-template *ngFor="let card of dataCards$ | async" carouselSlide>
+
+            <mat-card class="cardWithShadow rounded-8 elevation-1" style="min-height: 710px;">
+                <mat-card-content class="text-center p-8" style="cursor: pointer; position: relative">
+                    <div class="card-top-main">
+
+                        <div class="card-top">
+                            <div class="d-flex justify-content-between">
+
+
+                                <div class="logo-bank-main">
+                                    <div>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="45" height="32"
+                                            viewBox="0 0 45 32" fill="none">
+                                            <rect x="0.765137" y="0.0562706" width="44.2" height="30.94" rx="10.3133"
+                                                transform="rotate(0.0657437 0.765137 0.0562706)" fill="black"
+                                                fill-opacity="0.56" />
+                                            <line x1="20.4801" y1="24.2416" x2="20.4995" y2="7.29828" stroke="white"
+                                                stroke-width="2.06266" stroke-linecap="round" />
+                                            <path d="M6.04604 20.1733L20.19 20.1896M10.2544 12.0012L20.1994 12.0126"
+                                                stroke="white" stroke-width="2.06266" stroke-linecap="round" />
+                                            <path d="M26.3801 18.2077L36.9881 18.2198M27.0497 12.4624L40.5307 12.4779"
+                                                stroke="white" stroke-width="2.06266" stroke-linecap="round" />
+                                            <line x1="25.7841" y1="24.2477" x2="25.8035" y2="7.30436" stroke="white"
+                                                stroke-width="2.06266" stroke-linecap="round" />
+                                            <path d="M32.1213 22.4133L32.1251 19.0983" stroke="white"
+                                                stroke-width="2.06266" stroke-linecap="round" />
+                                            <path d="M36.5525 12.6943L36.5563 9.37931" stroke="white"
+                                                stroke-width="2.06266" stroke-linecap="round" />
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="name-bank-main">
+                                    <div class="name-bank">{{card.bank_name}}</div>
+                                </div>
+                            </div>
+
+                            <div class="number-card-main">
+                                <div class="number-card">
+                                    XXXX <span class="m-l-8"></span> XXXX <span class="m-l-8"></span> XXXX <span
+                                        class="m-l-8"></span> {{card.card_number}}
+                                </div>
+                            </div>
+
+                            <div class="logo-master-card-main">
+                                <div>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="27" viewBox="0 0 40 27"
+                                        fill="none">
+                                        <circle cx="13.5658" cy="13.5017" r="12.8917"
+                                            transform="rotate(0.0657437 13.5658 13.5017)" fill="white"
+                                            fill-opacity="0.5" />
+                                        <circle cx="26.4574" cy="13.5165" r="12.8917"
+                                            transform="rotate(0.0657437 26.4574 13.5165)" fill="white"
+                                            fill-opacity="0.5" />
+                                    </svg>
+                                </div>
+                                <div class="master-card-text">
+                                    Mastercard
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-start">
+                        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                            <mat-icon>
+                                <i-tabler name="dots" class="icon-20"></i-tabler>
+                            </mat-icon>
+                        </button>
+                        <mat-menu #menu="matMenu" class="cardWithShadow">
+                            <button mat-menu-item (click)="openDialogEditCard(card)">
+                                <mat-icon>
+                                    <i-tabler name="edit" class="icon-20"></i-tabler>
+                                </mat-icon>
+                                Edit
+                            </button>
+                            <button mat-menu-item (click)="openDialogRemoveCard(card)">
+                                <mat-icon>
+                                    <i-tabler name="trash" class="icon-20"></i-tabler>
+                                </mat-icon>
+                                Remove
+                            </button>
+                        </mat-menu>
+                    </div>
+                    <div class="card-title">Card Details</div>
+                    <div class="d-flex justify-content-center">
+                        <div *ngIf="card.send" class="button-group m-t-16">
+                            <button class="btn active">Send</button>
+                            <button class="btn">Non-Send</button>
+                        </div>
+                        <div *ngIf="!card.send" class="button-group m-t-16">
+                            <button class="btn">Send</button>
+                            <button class="btn active">Non-Send</button>
+                        </div>
+                    </div>
+                    <div class="p-16">
+                        <div class="due-date-text text-left m-t-16">
+                            Due Date: {{card.due_date}}
+                        </div>
+
+                        <div class="progress-container m-t-30">
+
+                            <div class="progress-marker">
+                                <a href="#"
+                                    class="mat-subtitle-2 text-decoration-none f-s-14 f-w-500 d-flex justify-content-center align-items-center">
+                                    <i-tabler name="pinned" class="icon-30 m-r-4 red-icon"></i-tabler>
+                                </a>
+                            </div>
+
+
+                            <div class="progress-bar">
+                                <div class="progress-section green"></div>
+                                <div class="progress-section yellow"></div>
+                                <div class="progress-section red"></div>
+                            </div>
+                        </div>
+
+                        <div class="dept-money-text text-left m-t-16">
+                            Dept Money: {{card.money_per_month | number}} VNĐ/Month
+                        </div>
+
+                        <div class="dept-money-text text-left m-t-10">
+                            Remaining Month: {{card.remaining_month}}
+                        </div>
+
+                        <div class="description-text text-left m-t-16">
+                            You can description shopping details below:
+                        </div>
+
+                        <div class="d-flex justify-content-start m-t-16 gap-8">
+                            <button mat-flat-button color="primary" (click)="openDialogTransaction(card)">
+                                <mat-icon>
+                                    <i-tabler name="square-plus" class="icon-20"></i-tabler>
+                                </mat-icon>
+                                Add
+                            </button>
+
+
+                            <button mat-flat-button color="primary">
+                                <mat-icon>
+                                    <i-tabler name="photo-plus" class="icon-20"></i-tabler>
+                                </mat-icon>
+                                Upload
+                            </button>
+                        </div>
+                        <div class="transaction-list">
+                            <div class="m-t-12" *ngFor="let stat of card.transactions;">
+
+
+
+                                <div class="d-flex align-items-center justify-content-between m-b-16 p-l-4 p-r-4"
+                                    *ngIf="!stat.deleted">
+                                    <div class="d-flex align-items-center">
+                                        <div class="rounded icon-40 d-flex align-items-center justify-content-start">
+                                            <img src="assets/images/svgs/icon-paypal.svg" alt="icon" />
+                                        </div>
+
+                                        <div
+                                            class=" d-flex align-items-start flex-wrap flex-column justify-content-start">
+                                            <span class="mat-body-1">{{ stat.product }}</span>
+                                            <span class="f-w-600 f-s-14 m-r-8"> {{ stat.money | number }} </span>
+
+
+                                        </div>
+                                    </div>
+
+                                    <div class="d-flex align-items-end flex-wrap flex-column">
+
+                                        <h6 class="mat-subtitle-1 f-s-14 f-w-600 m-r-4">{{ stat.category }}</h6>
+
+
+                                        <div class="d-flex align-items-center">
+                                            <mat-icon>
+                                                <i-tabler name="edit" (click)="openDialogEditTransaction(card,stat)"
+                                                    class="icon-20"></i-tabler>
+                                            </mat-icon>
+
+                                            <mat-icon>
+                                                <i-tabler name="trash" (click)="openDialogRemoveTransaction(card,stat)"
+                                                    class="icon-20"></i-tabler>
+                                            </mat-icon>
+                                        </div>
+
+                                    </div>
+
+
+
+                                </div>
+
+
+                            </div>
+                        </div>
+
+                    </div>
+                </mat-card-content>
+            </mat-card>
+
+
+        </ng-template>
+    </owl-carousel-o>
+
+    <div class="col-sm-6 col-lg-3 ">
+        <mat-card class="main-card-new cardWithShadow rounded-8 elevation-1"
+            style="min-height: 710px; background-color: transparent ; border: dashed 1px #000">
+            <mat-card-content class="text-center p-0" style="cursor: pointer;" (click)="openDialogAddCard()">
+                <div class="card-top-main-new">
+
+                    <div class="card-top-new">
+
+
+                        <div class="d-flex justify-content-between">
+                            <div class="logo-bank-main-new">
+                                <div>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="45" height="32" viewBox="0 0 45 32"
+                                        fill="none">
+                                        <rect x="0.765137" y="0.0562706" width="44.2" height="30.94" rx="10.3133"
+                                            transform="rotate(0.0657437 0.765137 0.0562706)" fill="black"
+                                            fill-opacity="0.56" />
+                                        <line x1="20.4801" y1="24.2416" x2="20.4995" y2="7.29828" stroke="white"
+                                            stroke-width="2.06266" stroke-linecap="round" />
+                                        <path d="M6.04604 20.1733L20.19 20.1896M10.2544 12.0012L20.1994 12.0126"
+                                            stroke="white" stroke-width="2.06266" stroke-linecap="round" />
+                                        <path d="M26.3801 18.2077L36.9881 18.2198M27.0497 12.4624L40.5307 12.4779"
+                                            stroke="white" stroke-width="2.06266" stroke-linecap="round" />
+                                        <line x1="25.7841" y1="24.2477" x2="25.8035" y2="7.30436" stroke="white"
+                                            stroke-width="2.06266" stroke-linecap="round" />
+                                        <path d="M32.1213 22.4133L32.1251 19.0983" stroke="white" stroke-width="2.06266"
+                                            stroke-linecap="round" />
+                                        <path d="M36.5525 12.6943L36.5563 9.37931" stroke="white" stroke-width="2.06266"
+                                            stroke-linecap="round" />
+                                    </svg>
+                                </div>
+                            </div>
+                            <div>+ Add Card</div>
+                        </div>
+
+                        <div class="number-card-main-new m-t-16">
+
+                            <div class="number-card m-t-16">
+                                XXXX <span class="m-l-8"></span> XXXX <span class="m-l-8"></span> XXXX <span
+                                    class="m-l-8"></span> 1773
+                            </div>
+                        </div>
+
+                        <div class="logo-master-card-main">
+                            <div>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="27" viewBox="0 0 40 27"
+                                    fill="none">
+                                    <circle cx="13.5658" cy="13.5017" r="12.8917"
+                                        transform="rotate(0.0657437 13.5658 13.5017)" fill="white" fill-opacity="0.5" />
+                                    <circle cx="26.4574" cy="13.5165" r="12.8917"
+                                        transform="rotate(0.0657437 26.4574 13.5165)" fill="white" fill-opacity="0.5" />
+                                </svg>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+
+
+            </mat-card-content>
+        </mat-card>
+
+    </div>
+</div>
