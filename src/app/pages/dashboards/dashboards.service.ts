@@ -48,10 +48,10 @@ export class DashboardsService {
 
     return response.pipe(
       tap((res: any) => {
-        console.log('oo', res);
+        
         const data = res.data_card          
           .filter((item:any) => item.deleted === false);
-        console.log('data', data);
+        
         this.dataCardsDisplay.next(data);
       }),
       catchError((error) => {
@@ -93,10 +93,12 @@ export class DashboardsService {
   }
 
   createTransaction(data: any) {
+    
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${localStorage.getItem('tokens')}`
     });
     const response = this.httpClient.post<any>(`${this.url}/auth/create-transactions`, data, { headers: headers });
+  
     return response
   }
 
@@ -125,12 +127,22 @@ export class DashboardsService {
     return response
   }
 
-  updateTransaction(data: any) {
-    console.log('datrrrrr', data);
+  updateTransaction(data: any) {    
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${localStorage.getItem('tokens')}`
     });
     const response = this.httpClient.post<any>(`${this.url}/auth/update-transaction`, data, { headers: headers });
+    return response
+  }
+
+  uploadImageTransaction(file: File) {
+    const formData = new FormData();
+    formData.append('file', file); // Thêm file vào FormData
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${localStorage.getItem('tokens')}`
+    });
+    
+    const response = this.httpClient.post<any>(`${this.url}/auth/verify-upload`, formData, { headers: headers });
     return response
   }
 }

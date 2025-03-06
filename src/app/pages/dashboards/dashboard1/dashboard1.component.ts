@@ -10,7 +10,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogConfirmComponent } from '../common/dialog-confirm/dialog-confirm.component';
-import { Observable } from 'rxjs';
+import { catchError, finalize, forkJoin, mergeMap, Observable } from 'rxjs';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { OverlayModule } from '@angular/cdk/overlay';
@@ -20,6 +20,7 @@ import { DialogEditTransactionsComponent } from '../common/dialog-edit-transacti
 import { CarouselModule, OwlOptions } from 'ngx-owl-carousel-o';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DialogUpImageTransactionComponent } from '../common/dialog-up-image-transaction/dialog-up-image-transaction';
 
 
 @Component({
@@ -28,7 +29,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
   imports: [
     CommonModule,CarouselModule, TablerIconsModule, MatDividerModule, MatCardModule,
     MatButtonToggleModule, MatProgressBarModule, MatIconModule, MatMenuModule,
-    MatButtonModule, MatProgressSpinnerModule
+    MatButtonModule, MatProgressSpinnerModule, OverlayModule
     
   ],
   templateUrl: './dashboard1.component.html',
@@ -55,11 +56,11 @@ export class AppDashboard1Component {
     margin: 20,
     nav: true,
     dots: true,
-    // responsive: {
-    //   0: { items: 1 },
-    //   600: { items: 2 },
-    //   1000: { items: 3 }
-    // }
+    responsive: {
+      0: { items: 1 },
+      600: { items: 2 },
+      1000: { items: 3 }
+    }
   };
 
  
@@ -70,8 +71,7 @@ export class AppDashboard1Component {
   public varTest = '';
   cards = Array(3).fill(0).map((_, i) => i + 1);
   ngOnInit() {
-    this.dataCards$ = this.service.dataCards$
-    console.log('this.dataCards$', this.dataCards$);
+    this.dataCards$ = this.service.dataCards$   
     
     this.service.getData().subscribe((res: any) => {
       // console.log(res);
@@ -79,7 +79,7 @@ export class AppDashboard1Component {
     });
   }
   openDialogAddCard() {
-    console.log('openDialogAddCard');
+  
     const dialogRef = this.dialog.open(DialogConfirmComponent, {
       width: '500px',
       // enterAnimationDuration,
@@ -117,10 +117,10 @@ export class AppDashboard1Component {
     dialogRef.afterClosed().subscribe(result => {
       this.loadingSpinner = true;
       if(result) {
+        
         result.cardId = card._id
         this.service.createTransaction(result).subscribe((res: any) => {
-          console.log('card', card);
-          console.log('res', res);
+          
         
           this.service.getData().subscribe();
           this.loadingSpinner = false;
@@ -187,10 +187,10 @@ export class AppDashboard1Component {
       // exitAnimationDuration,
       data
     });
-    console.log('data', data);
+    
     dialogRef.afterClosed().subscribe(result => {
       this.loadingSpinner = true;
-      console.log('result', result)
+      
       
       if(result) {  
         const body = result
@@ -216,8 +216,7 @@ export class AppDashboard1Component {
     });
     
     dialogRef.afterClosed().subscribe(result => {
-      console.log('result', result)
-      console.log('data', data)
+     
       // console.log('The dialog was closed', result);
       if(result) {
         const body = data
@@ -229,6 +228,71 @@ export class AppDashboard1Component {
       }
     });
   }
+
+  onFileSelected(event: Event, card: any) {
+    this.loadingSpinner = true;
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      const file = input.files[0];
+      
+  
+      this.service.uploadImageTransaction(file).subscribe((res: any) => {
+        if (res) {
+          this.loadingSpinner = false;
+          const reader = new FileReader();
+          reader.readAsDataURL(file);
+          reader.onload = (_event) => {
+            const imagePath = reader.result; // Lấy Base64 URL
+          
+  
+            const dialogRef = this.dialog.open(DialogUpImageTransactionComponent, {
+              width: '80%',
+              data: {
+                file: imagePath,
+                data: res.line_items
+              }
+            });
+  
+            dialogRef.afterClosed().subscribe(result => {
+              if (result.data && result.data.length > 0) {
+                this.loadingSpinner = true;
+  
+                // ✅ Return Observable từ map()
+                const transactionRequests = result.data.map((item: any) => {
+                 
+                  item.cardId = card._id;
+                  item.id = card._id;
+                  
+                  
+                  return this.service.createTransaction(item).pipe(
+                    catchError(err => {
+                      console.error('Transaction creation failed', err);
+                      return []; // Trả về array rỗng để tránh lỗi
+                    })
+                  );
+                });
+  
+                // ✅ Thực thi tất cả API bằng forkJoin()
+                forkJoin(transactionRequests).pipe(
+                  mergeMap(() => this.service.getData()),  // Fetch updated data sau khi tất cả transactions hoàn thành
+                  finalize(() => this.loadingSpinner = false) // Đảm bảo spinner dừng khi hoàn tất
+                ).subscribe(
+                  () => console.log('Transactions created and data refreshed'),
+                  error => console.error('Error updating data', error)
+                );
+              } else {
+                this.loadingSpinner = false;
+                console.log('No data to process');
+              }
+              console.log('The dialog was closed', result);
+            });
+          };
+        }
+      });
+    }
+  }
+  
+  
 
 
 

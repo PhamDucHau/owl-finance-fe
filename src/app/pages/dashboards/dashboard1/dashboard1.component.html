@@ -2,11 +2,11 @@
     <mat-spinner></mat-spinner>
 </div>
 
-<div class="row" style="padding: 60px 0">
+<div class="row" style="padding: 100px 0">
     <owl-carousel-o [options]="customOptions" class="owl-theme">
         <ng-template *ngFor="let card of dataCards$ | async" carouselSlide>
 
-            <mat-card class="cardWithShadow rounded-8 elevation-1" style="min-height: 710px;">
+            <mat-card class="cardWithShadow rounded-8 elevation-1 main-card-list">
                 <mat-card-content class="text-center p-8" style="cursor: pointer; position: relative">
                     <div class="card-top-main">
 
@@ -143,14 +143,19 @@
                             </button>
 
 
-                            <button mat-flat-button color="primary">
+                            <button mat-flat-button color="primary" (click)="fileInput.click()">
                                 <mat-icon>
-                                    <i-tabler name="photo-plus" class="icon-20"></i-tabler>
+                                  <i-tabler name="photo-plus" class="icon-20"></i-tabler>
                                 </mat-icon>
                                 Upload
-                            </button>
+                              </button>
+                              
+                              <!-- Input file ẩn -->
+                              <input #fileInput type="file" accept="image/*" hidden (change)="onFileSelected($event, card)">
+                              
                         </div>
                         <div class="transaction-list">
+                            
                             <div class="m-t-12" *ngFor="let stat of card.transactions;">
 
 
@@ -164,8 +169,8 @@
 
                                         <div
                                             class=" d-flex align-items-start flex-wrap flex-column justify-content-start">
-                                            <span class="mat-body-1">{{ stat.product }}</span>
-                                            <span class="f-w-600 f-s-14 m-r-8"> {{ stat.money | number }} </span>
+                                            <span class="mat-body-1">{{ stat.product }} <span class="f-s-14 f-w-700" style="color: black">( SL: {{ stat.quantity || 1 }} )</span> </span>
+                                            <span class="f-w-600 f-s-14 m-r-8"> {{ (stat.money * (stat.quantity || 1)) | number }} </span>
 
 
                                         </div>
