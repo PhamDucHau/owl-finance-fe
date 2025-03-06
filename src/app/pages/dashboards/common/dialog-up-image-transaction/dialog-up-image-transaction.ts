@@ -1,7 +1,7 @@
 import { OverlayModule } from "@angular/cdk/overlay";
 import { CommonModule, DatePipe } from "@angular/common";
 import { Component, Inject } from "@angular/core";
-import { AbstractControl, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
+import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { MatCardModule } from "@angular/material/card";
@@ -22,7 +22,7 @@ import { id } from "date-fns/locale";
 
 @Component({
   // tslint:disable-next-line: component-selector
-  selector: 'app-dialog-edit-transactions',
+  selector: 'app-dialog-up-image-transaction',
   standalone: true,
   imports: [
     MatDialogActions,
@@ -51,12 +51,13 @@ import { id } from "date-fns/locale";
     MatDatepickerModule,
 
   ],
-  templateUrl: 'dialog-edit-transactions.html',
-  styleUrl: './dialog-edit-transactions.scss',
+  templateUrl: 'dialog-up-image-transaction.component.html',
+  styleUrl: './dialog-up-image-transaction.component.scss',
+  
   providers: [DatePipe],
 })
 // tslint:disable-next-line: component-class-suffix
-export class DialogEditTransactionsComponent {
+export class DialogUpImageTransactionComponent {
   public loadingSpinner = false;
   transactionsForm: FormGroup;
   
@@ -67,73 +68,66 @@ export class DialogEditTransactionsComponent {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private fb: FormBuilder
   ) {
-    this.transactionsForm = this.fb.group({      
-      category: [null, [Validators.required]],
-      product: [null, [Validators.required]],
-      money: [null, [Validators.required, Validators.pattern(/^[0-9]+(\.[0-9]{1,2})?$/)]],
-      quantity: [null, [Validators.required, Validators.pattern(/^[0-9]+(\.[0-9]{1,2})?$/)]],
-      total: [null ],      
-    })
-    if (data) {
-      this.transactionsForm.get('category')?.setValue(data.category, { emitEvent: false });
-      this.transactionsForm.get('product')?.setValue(data.product, { emitEvent: false });
-      this.transactionsForm.get('money')?.setValue(data.money, { emitEvent: false });
-      this.transactionsForm.get('quantity')?.setValue(data.quantity, { emitEvent: false });
-      this.transactionsForm.get('total')?.setValue(data.total, { emitEvent: false });
-    }
-    else{
-      this.transactionsForm.get('category')?.setValue('', { emitEvent: false });
-      this.transactionsForm.get('product')?.setValue('', { emitEvent: false });
-      this.transactionsForm.get('money')?.setValue('', { emitEvent: false });
-      this.transactionsForm.get('quantity')?.setValue('', { emitEvent: false });
-      this.transactionsForm.get('total')?.setValue('', { emitEvent: false });
-    }
-    
-    
-    
-
-
-
+    this.transactionsForm = this.fb.group({
+      data: this.fb.array([]) // Khởi tạo FormArray rỗng
+    });
   }
+
+  get transactions() {
+    return this.transactionsForm.get('data') as FormArray;
+  }
+
+ 
+
+  createListTransaction(tran:any): FormGroup {
+    return this.fb.group({
+      category: [tran.type || '', Validators.required],
+      product: [tran.description || '', [Validators.required]],
+      quantity: [tran.quantity || '', [Validators.required]],
+      money: [tran.price || '', [Validators.required]],
+      total: [tran.total || ''],
+    });
+  }
+
+  onSubmit() {
+    console.log(this.transactionsForm.value);
+    this.dialogRef.close(this.transactionsForm.value);
+  }
+
+  // addTransaction() {
+  //   this.transactions.push(this.createListTransaction());
+  // }
 
   cancle(): void {
     this.dialogRef.close(false);
   }
 
   save(): void {
-    // this.dialogRef.close(true)
-    if (this.transactionsForm.valid) {      
-      const body = {
-        id: this.data._id || null,
-        category: this.transactionsForm.get('category')?.value,
-        product: this.transactionsForm.get('product')?.value,
-        money: this.transactionsForm.get('money')?.value,
-        quantity: this.transactionsForm.get('quantity')?.value,
-        total: (Number(this.transactionsForm.get('money')?.value) * Number(this.transactionsForm.get('quantity')?.value)).toFixed(2),
-      }
-      this.dialogRef.close(body)
-
-    }
+    this.dialogRef.close(true)
   }
  
 
   
   ngOnInit(): void {
-  
-   
-
-
-
+    this.populateForm();
+    console.log(this.data);
+    console.log('transactions', this.transactions);
   }
 
-  onSubmit() {
-    if (this.transactionsForm.valid) {
-      console.log('Form Data:', this.transactionsForm.value);
-    } else {
-      console.log('Form is invalid!');
-    }
+  populateForm() {
+    this.data.data.forEach((tran: any) => {
+      console.log('tran', tran);
+      this.transactions.push(this.createListTransaction(tran));
+    });
   }
 
+  addTransaction() {
+    this.transactions.push(this.createListTransaction({}));
+  }
+
+  removeTransaction(index: number) {
+    this.transactions.removeAt(index);
+  }
   
 
 

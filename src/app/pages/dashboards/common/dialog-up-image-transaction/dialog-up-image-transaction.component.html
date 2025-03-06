@@ -1,0 +1,94 @@
+<div class="p-20" >
+  <h2 class="m-t-0">Form Transaction</h2>
+  <div class="row">
+    <div class="col">
+      <div class="bill-container">
+        <img src="{{data.file}}" alt="Hình ảnh mẫu">
+      </div>
+    </div>
+    <div class="col">
+      <form [formGroup]="transactionsForm">
+        <div formArrayName="data">
+          <div *ngFor="let product of transactions.controls; let i = index" [formGroupName]="i">
+
+            <div class="d-flex flex-row gap-12">
+              <!-- <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-24 text-left" style="line-height: 1.5"
+              >Category:
+            </mat-label> -->
+              <mat-form-field appearance="outline" class="w-100" style="width: 10rem">
+                <mat-label>Category</mat-label>
+                <input matInput placeholder="Category" formControlName="category" />
+                <!-- <div *ngIf="cardsForm.controls['card_number'].invalid && cardsForm.controls['card_number'].touched">
+                Card number must be at least 4 characters.
+              </div> -->
+              </mat-form-field>
+
+              <!-- <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-24 text-left" style="line-height: 1.5"
+              >Product:
+            </mat-label> -->
+              <mat-form-field appearance="outline" class="w-100" style="width: 10rem">
+                <mat-label>Product</mat-label>
+                <input matInput placeholder="Product" formControlName="product" />
+                <!-- <div *ngIf="cardsForm.controls['card_number'].invalid && cardsForm.controls['card_number'].touched">
+                Card number must be at least 4 characters.
+              </div> -->
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="w-100" style="width: 6rem">
+                <mat-label>Quantity</mat-label>
+                <input matInput placeholder="Quantity" formControlName="quantity" />
+                <!-- <div *ngIf="cardsForm.controls['card_number'].invalid && cardsForm.controls['card_number'].touched">
+                Card number must be at least 4 characters.
+              </div> -->
+              </mat-form-field>
+
+              <!-- <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-24 text-left" style="line-height: 1.5"
+            >Money:
+          </mat-label> -->
+              <mat-form-field appearance="outline" placeholder="Money" class="w-100" style="width: 6rem">
+                <mat-label>Money</mat-label>
+                <input matInput placeholder="Money" formControlName="money" />
+                <!-- <div *ngIf="cardsForm.controls['card_number'].invalid && cardsForm.controls['card_number'].touched">
+              Card number must be at least 4 characters.
+            </div> -->
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="w-100" style="width: 6rem">
+                <mat-label>Total</mat-label>
+                <input matInput placeholder="Total" formControlName="total" />
+                <!-- <div *ngIf="cardsForm.controls['card_number'].invalid && cardsForm.controls['card_number'].touched">
+              Card number must be at least 4 characters.
+            </div> -->
+              </mat-form-field>
+
+              <div class="d-flex align-items-center">
+                <!-- <mat-icon>
+                    <i-tabler name="edit"
+                        class="icon-20"></i-tabler>
+                </mat-icon> -->
+
+              <div class="d-flex align-items-center">
+                <mat-icon (click)="removeTransaction(i)">
+                  <i-tabler name="trash" 
+                      class="icon-20"></i-tabler>
+              </mat-icon>
+              </div>
+
+                
+            </div>
+            </div>
+
+          </div>
+        </div>
+
+      </form>
+      <div class="p-t-0 d-flex justify-content-end gap-12">
+        <button mat-flat-button color="primary" (click)="addTransaction()" cdkFocusInitial>Add</button>
+        <button mat-flat-button color="primary" (click)="onSubmit()" cdkFocusInitial>Save</button>
+        <!-- <button mat-stroked-button color="warn" (click)="cancle()" mat-dialog-close>No</button> -->
+
+      </div>
+    </div>
+  </div>
+
+</div>

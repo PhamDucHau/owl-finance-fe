@@ -26,7 +26,7 @@
               >Category:
           </mat-label>
           <mat-form-field appearance="outline" class="w-100" style="width: 20rem" >
-            <input  matInput placeholder="" formControlName="category"/>
+            <input  matInput placeholder="Category" formControlName="category"/>
             <!-- <div *ngIf="cardsForm.controls['card_number'].invalid && cardsForm.controls['card_number'].touched">
               Card number must be at least 4 characters.
             </div> -->
@@ -38,10 +38,20 @@
               >Product:
           </mat-label>
           <mat-form-field appearance="outline" class="w-100" style="width: 20rem" >
-            <input matInput laceholder="" formControlName="product"/>
+            <input matInput placeholder="Product" formControlName="product"/>
             <!-- <div *ngIf="cardsForm.controls['due_date'].invalid && cardsForm.controls['due_date'].touched">
               Must be between 1 and 12.
             </div> -->
+          </mat-form-field>
+        </div>
+
+        <div class="d-flex align-items-center justify-content-between gap-16 p-l-16 p-r-16">
+          <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-24 text-left" style="line-height: 1.5"
+              >Quantity:
+          </mat-label>
+          <mat-form-field appearance="outline" class="w-100" style="width: 20rem" >
+            <input matInput placeholder="Quantity" formControlName="quantity"/>
+            
           </mat-form-field>
         </div>
   
@@ -50,7 +60,7 @@
               >Money:
           </mat-label>
           <mat-form-field appearance="outline" class="w-100" style="width: 20rem" >
-            <input matInput placeholder="" formControlName="money"/>
+            <input matInput placeholder="Money" formControlName="money"/>
             
           </mat-form-field>
         </div>
@@ -70,7 +80,7 @@
        
         <div mat-dialog-actions class=" p-t-0 d-flex justify-content-end">
           <!-- <button mat-stroked-button color="warn" (click)="cancle()" mat-dialog-close>No</button> -->
-          <button mat-flat-button color="primary" (click)="save()" cdkFocusInitial>Hoàn thành</button>
+          <button mat-flat-button color="primary" (click)="onSubmit()" cdkFocusInitial>Hoàn thành</button>
         </div>
       </div>
   </mat-card-content>
