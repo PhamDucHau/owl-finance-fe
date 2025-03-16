@@ -31,7 +31,7 @@ export class AppSideLoginComponent {
     uname: new FormControl('', [Validators.required, Validators.minLength(6)]),
     password: new FormControl('', [Validators.required]),
   });
-  alignhide = false
+  // alignhide = false
 
   get f() {
     return this.form.controls;
@@ -109,6 +109,18 @@ export class AppSideLoginComponent {
       data: { message: data, status: status  }, // Truyền dữ liệu
     }); 
   }
+
+  alignhide = true;
+  iconVisible = true;
+
+togglePasswordVisibility() {
+  this.alignhide = !this.alignhide;
+  this.iconVisible = false; // Ẩn icon ngay lập tức
+
+  setTimeout(() => {
+    this.iconVisible = true; // Hiển thị icon sau 300ms
+  }, 300);
+}
 }
 
 

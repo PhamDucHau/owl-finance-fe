@@ -107,7 +107,19 @@
 
                         <div class="progress-container m-t-30">
 
-                            <div class="progress-marker">
+                            <div *ngIf="daysUntilDue(card.due_date) == 'low'" class="progress-marker-low">
+                                <a href="#"
+                                    class="mat-subtitle-2 text-decoration-none f-s-14 f-w-500 d-flex justify-content-center align-items-center">
+                                    <i-tabler name="pinned" class="icon-30 m-r-4 red-icon"></i-tabler>
+                                </a>
+                            </div>
+                            <div *ngIf="daysUntilDue(card.due_date) == 'medium'"  class="progress-marker-medium">
+                                <a href="#"
+                                    class="mat-subtitle-2 text-decoration-none f-s-14 f-w-500 d-flex justify-content-center align-items-center">
+                                    <i-tabler name="pinned" class="icon-30 m-r-4 red-icon"></i-tabler>
+                                </a>
+                            </div>
+                            <div *ngIf="daysUntilDue(card.due_date) == 'high'" class="progress-marker-high">
                                 <a href="#"
                                     class="mat-subtitle-2 text-decoration-none f-s-14 f-w-500 d-flex justify-content-center align-items-center">
                                     <i-tabler name="pinned" class="icon-30 m-r-4 red-icon"></i-tabler>
@@ -163,22 +175,26 @@
                                 <div class="d-flex align-items-center justify-content-between m-b-16 p-l-4 p-r-4"
                                     *ngIf="!stat.deleted">
                                     <div class="d-flex align-items-center">
-                                        <div class="rounded icon-40 d-flex align-items-center justify-content-start">
-                                            <img src="assets/images/svgs/icon-paypal.svg" alt="icon" />
+                                        <div class="rounded icon-44 d-flex align-items-center justify-content-start m-r-4">
+                                            <img style="border-radius: 8px;" [src]="stat.logo ? stat.logo : 'assets/images/svgs/icon-paypal.svg'" alt="icon" />
+
                                         </div>
+
+                                        <!-- <img [src]="assets/images/svgs/icon-paypal.svg" alt="icon" /> -->
 
                                         <div
                                             class=" d-flex align-items-start flex-wrap flex-column justify-content-start">
                                             <span class="mat-body-1">{{ stat.product }} <span class="f-s-14 f-w-700" style="color: black">( SL: {{ stat.quantity || 1 }} )</span> </span>
-                                            <span class="f-w-600 f-s-14 m-r-8"> {{ (stat.money * (stat.quantity || 1)) | number }} </span>
-
-
+                                            <span class="f-w-600 f-s-14 m-r-8"> {{ (stat.money * (stat.quantity || 1)) | number }} VNĐ </span>
+                                            <span>{{stat.brand}}</span>
                                         </div>
                                     </div>
 
+                                    
+
                                     <div class="d-flex align-items-end flex-wrap flex-column">
 
-                                        <h6 class="mat-subtitle-1 f-s-14 f-w-600 m-r-4">{{ stat.category }}</h6>
+                                        <h6 class="mat-subtitle-1 f-s-14 f-w-600 m-r-4">{{ stat.category }}</h6>                                   
 
 
                                         <div class="d-flex align-items-center">
