@@ -84,7 +84,7 @@
               <mat-spinner ></mat-spinner>
             </div>
 
-            <form class="m-t-30" [formGroup]="form" (ngSubmit)="submit()">
+            <form class="m-t-30" [formGroup]="form">
               <!-- <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block"
                 >Username</mat-label
               > -->
@@ -112,35 +112,41 @@
               <!-- <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block"
                 >Password</mat-label
               > -->
-              <mat-form-field
-                appearance="outline"
-                class="w-100"
-                color="primary"
-              >
-                <input matInput type="password" formControlName="password" placeholder="Password" />
-                <button
-                mat-icon-button
-                matSuffix
-                (click)="alignhide = !alignhide"
-                [attr.aria-label]="'Hide password'"
-                [attr.aria-pressed]="alignhide"
-              >
-                <mat-icon class="op-5">{{
-                  alignhide ? "visibility_off" : "visibility"
-                }}</mat-icon>
-              </button>
+              <mat-form-field appearance="outline" class="w-100" color="primary">
                 <mat-icon matPrefix class="op-5">
                   <i-tabler name="key" class="icon-20 d-flex"></i-tabler>
                 </mat-icon>
+                
+                <input
+                  matInput
+                  [type]="alignhide ? 'password' : 'text'"
+                  formControlName="password"
+                  placeholder="Password"
+                />
+              
+                <button
+                  mat-icon-button
+                  matSuffix
+                  (click)="togglePasswordVisibility()"
+                  [attr.aria-label]="alignhide ? 'Show password' : 'Hide password'"
+                  [attr.aria-pressed]="!alignhide"
+                  type="button"
+                >
+                  <mat-icon class="op-5" *ngIf="iconVisible">
+                    {{ alignhide ? "visibility_off" : "visibility" }}
+                  </mat-icon>
+                </button>
+              
                 @if(f['password'].touched && f['password'].invalid) {
-                <mat-hint class="m-b-16 error-msg">
-                  @if( f['password'].errors && f['password'].errors['required'])
-                  {
-                  <div class="text-error">Password is required.</div>
-                  }
-                </mat-hint>
+                  <mat-hint class="m-b-16 error-msg">
+                    @if(f['password'].errors?.['required']) {
+                      <div class="text-error">Password is required.</div>
+                    }
+                  </mat-hint>
                 }
               </mat-form-field>
+              
+              
 
               <div class="d-flex align-items-center m-b-12">
                 <mat-checkbox color="primary"
@@ -157,6 +163,7 @@
                 color="primary"
                 class="w-100"
                 [disabled]="!form.valid"
+                (click)="submit()"
               >
                 Login
               </button>

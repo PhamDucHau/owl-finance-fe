@@ -50,11 +50,37 @@
     width: 100%;
 }
 
-.progress-marker {
+.progress-marker-low {
     position: absolute;
     top: -26px;
     /* Để chấm tròn nhô lên trên */
     left: 0;
+    // width: 12px;
+    // height: 12px;
+
+    // border: 2px solid red;
+    // border-radius: 50%;
+    z-index: 20;
+}
+
+.progress-marker-medium {
+    position: absolute;
+    top: -26px;
+    /* Để chấm tròn nhô lên trên */
+    left: 149px;
+    // width: 12px;
+    // height: 12px;
+
+    // border: 2px solid red;
+    // border-radius: 50%;
+    z-index: 20;
+}
+
+.progress-marker-high {
+    position: absolute;
+    top: -26px;
+    /* Để chấm tròn nhô lên trên */
+    left: 204px;
     // width: 12px;
     // height: 12px;
 

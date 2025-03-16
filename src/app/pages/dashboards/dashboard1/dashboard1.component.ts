@@ -70,13 +70,35 @@ export class AppDashboard1Component {
   protected dataCards$!: Observable<any | null>;
   public varTest = '';
   cards = Array(3).fill(0).map((_, i) => i + 1);
-  ngOnInit() {
+  ngOnInit() {    
     this.dataCards$ = this.service.dataCards$   
     
     this.service.getData().subscribe((res: any) => {
       // console.log(res);
       // this.varTest = res.email;
     });
+  }
+
+  daysUntilDue(dueDay: number): string {
+    const today = new Date();
+    const currentDay = today.getDate();
+    let daysRemaining: number;
+  
+    if (dueDay >= currentDay) {
+      daysRemaining = dueDay - currentDay;
+    } else {
+      const nextMonth = new Date(today.getFullYear(), today.getMonth() + 1, dueDay);
+      const diffTime = nextMonth.getTime() - today.getTime();
+      daysRemaining = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    }
+  
+    if (daysRemaining <= 5) {
+      return "high";
+    } else if (daysRemaining <= 15) {
+      return "medium";
+    } else {
+      return "low";
+    }
   }
   openDialogAddCard() {
   
@@ -249,7 +271,9 @@ export class AppDashboard1Component {
               width: '80%',
               data: {
                 file: imagePath,
-                data: res.line_items
+                data: res.line_items,
+                brand: res.vendor.name,
+                logo: res.vendor.logo
               }
             });
   
@@ -291,12 +315,15 @@ export class AppDashboard1Component {
       });
     }
   }
+
+  
+  
   
   
 
 
 
-
+ 
   
   
  
