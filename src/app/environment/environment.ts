@@ -8,8 +8,8 @@
         appId: "1:890080490812:web:96b8186e77f2a84353da39"
     },
     production: false,
-    // domain: 'http://103.82.38.96:3003',
-    domain: 'http://localhost:3000'
+    domain: 'http://103.82.38.96:3003',
+    // domain: 'http://localhost:3000'
   };
 
 // export const environment = {   

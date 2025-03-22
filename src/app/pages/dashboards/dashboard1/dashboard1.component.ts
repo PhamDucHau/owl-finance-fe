@@ -53,13 +53,13 @@ export class AppDashboard1Component {
   customOptions: OwlOptions = {
     items: 3,
     // loop: true,
-    margin: 20,
+    margin: 40,
     nav: true,
     dots: true,
     responsive: {
       0: { items: 1 },
       600: { items: 2 },
-      1000: { items: 3 }
+      1000: { items: 3 },     
     }
   };
 
@@ -141,6 +141,7 @@ export class AppDashboard1Component {
       if(result) {
         
         result.cardId = card._id
+        result.cardName = card.name
         this.service.createTransaction(result).subscribe((res: any) => {
           
         
@@ -256,6 +257,51 @@ export class AppDashboard1Component {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       const file = input.files[0];
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = (_event) => {
+
+      //   const imagePath = reader.result; // Lấy Base64 URL
+      //   const body = {
+      //     file: imagePath,
+      //     data: [
+      //       {
+      //         date: null,
+      //       description: "Bac Xiu Da M",
+      //       discount:null,
+      //       discount_rate:null,
+      //       end_date:null,
+      //       full_description:"Bac Xiu Da M",
+      //       hsn:null,
+      //       id:1342069562,
+      //       lot:null,
+      //       normalized_description:null,
+      //       order:0,
+      //       price:null,
+      //       quantity:2,
+      //       reference:null,
+      //       section:null,
+      //       sku:null,
+      //       start_date:null,
+      //       tags:[],
+      //       tax:null,
+      //       tax_rate:null,
+      //       text:"2 Bac Xiu Da M\t\t78,000",
+      //       total:78000,
+      //       type:"food",
+      //       unit_of_measure:null,
+      //       upc:null,
+      //       weight:null
+      //     }
+      //   ],
+      //   brand: "HIGHLANDS COFFEE",
+      //   logo: "https://cdn.veryfi.com/logos/tmp/e245d3f8-8ee3-47ee-a4d8-9b613aa09a2b.png"
+      // }
+      // console.log('body', body)
+      // const dialogRef = this.dialog.open(DialogUpImageTransactionComponent, {
+      //   width: '80%',
+      //   data: body
+      // });
       
   
       this.service.uploadImageTransaction(file).subscribe((res: any) => {
@@ -265,16 +311,21 @@ export class AppDashboard1Component {
           reader.readAsDataURL(file);
           reader.onload = (_event) => {
             const imagePath = reader.result; // Lấy Base64 URL
+            const body ={
+              file: imagePath,
+              data: res.line_items,
+              brand: res.vendor.name,
+              logo: res.vendor.logo
+            }
+            
+ 
+         
+            console.log('body', body)
           
   
             const dialogRef = this.dialog.open(DialogUpImageTransactionComponent, {
               width: '80%',
-              data: {
-                file: imagePath,
-                data: res.line_items,
-                brand: res.vendor.name,
-                logo: res.vendor.logo
-              }
+              data: body
             });
   
             dialogRef.afterClosed().subscribe(result => {
@@ -327,4 +378,6 @@ export class AppDashboard1Component {
   
   
  
+}
+
 }

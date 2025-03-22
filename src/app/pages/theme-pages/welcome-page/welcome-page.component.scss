@@ -297,8 +297,29 @@
 
 .images-bg-style {
     width: 1100px;
-    height: 100%;
+    height: 40rem;
     // object-fit: cover;
+}
+
+@media (max-width: 1400px) {
+    .images-bg-style {
+        width: 850px;
+        height: 30rem;
+        // height: 100%;
+        // object-fit: cover;
+    }
+    .container-text-main {
+        display: flex;
+        justify-content: left;
+        align-items: center;
+        margin-top: -208px;
+        margin-left: 180px;
+        // top: 550px;
+        // left: 150px;
+        gap: 0px;
+        opacity: 0px;
+        // position: absolute;
+    }
 }
 
 .images-card-blue {
