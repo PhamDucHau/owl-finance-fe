@@ -1,0 +1,82 @@
+<div class="p-24 p-b-0">
+    <div class="row">
+      <div class="col-10">
+        <mat-form-field
+          appearance="outline"
+          color="primary"
+          class="hide-hint w-100"
+        >
+          <input matInput placeholder="Search here" [(ngModel)]="searchText" />
+        </mat-form-field>
+      </div>
+      <div class="col-2 d-flex justify-content-end">
+        <button
+          mat-icon-button
+          mat-dialog-close
+          class="d-flex justify-content-center"
+        >
+          <i-tabler name="x" class="icon-18 d-flex"></i-tabler>
+        </button>
+      </div>
+    </div>
+  </div>
+  <mat-divider></mat-divider>
+  <mat-dialog-content class="mat-typography search-dialog">
+    <h4 class="f-s-18 f-w-600 mat-subtitle-1 m-b-16">Tìm kiếm</h4>
+  
+    @for(item of dataEmail$ | async; track item.email) {
+
+      <div mat-menu-item class="p-x-32 p-y-8">
+        <div class="d-flex align-items-center justify-content-between">
+          <div>
+            <img src="/assets/images/profile/user-1.jpg" class="rounded-circle" width="48" />
+          </div>
+          <div class="m-l-16">
+            <h5 class="f-s-14 f-w-600 m-0 mat-subtitle-1">
+              {{ item.email }}
+            </h5>
+            <div class="d-flex gap-8">
+              <!-- <button mat-stroked-button color="primary" class="small-button" >
+               Đã gửi lời mời
+              </button>
+              <button mat-stroked-button color="warn" class="small-button" >
+                Huỷ lời mời
+              </button> -->
+
+              <div>
+                <button (click)="addFriend(item)" mat-stroked-button color="primary" >
+                  <!-- <i-tabler name="user-plus" class="icon-20 d-flex"></i-tabler> -->
+                 Thêm bạn
+                </button> 
+              </div>  
+              
+            </div>
+            <style>
+              .small-button {
+                padding: 4px 12px !important;
+                font-size: 12px !important;
+                min-width: 80px !important;
+              }
+            </style>
+          </div>
+                
+          
+        </div>
+      </div>
+      
+      <!-- <h5 class="f-s-14 f-w-500 d-block mat-subtitle-1 m-0">
+        {{ item.email }}
+      </h5> -->
+    <!-- <a
+      [routerLink]="[item.route]"
+      mat-dialog-close
+      class="p-y-12 text-decoration-none d-block"
+    >
+      <h5 class="f-s-14 f-w-500 d-block mat-subtitle-1 m-0">
+        {{ item.displayName }}
+      </h5>
+      <span class="f-s-12 mat-body-2">{{ item.route }}</span>
+    </a> -->
+    }
+  </mat-dialog-content>
+  

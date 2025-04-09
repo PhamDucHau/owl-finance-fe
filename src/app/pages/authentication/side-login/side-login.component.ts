@@ -49,9 +49,11 @@ export class AppSideLoginComponent {
       }
       this.service.getRegister(data).subscribe(res => {
         if (res) {
+          console.log('res login', res)
           localStorage.clear(); 
           setTimeout(() => {
             localStorage.setItem('tokens', res.token.accessToken);
+            localStorage.setItem('gmail', res.user.email);
             // this.form.reset();
             this.openSnackBar('Login successful', 'success');
             this.loadingSpinner = false;
@@ -83,6 +85,7 @@ export class AppSideLoginComponent {
         localStorage.clear(); 
         setTimeout(() => {
           localStorage.setItem('tokens', res.token.accessToken);
+          localStorage.setItem('gmail', res.user.email);
           // this.form.reset();
           this.openSnackBar('Login successful', 'success');
           this.loadingSpinner = false;
