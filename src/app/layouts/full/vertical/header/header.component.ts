@@ -4,6 +4,8 @@ import {
   EventEmitter,
   Input,
   ViewEncapsulation,
+  inject,
+  Inject,
 } from '@angular/core';
 import { CoreService } from 'src/app/services/core.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -15,6 +17,11 @@ import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgScrollbarModule } from 'ngx-scrollbar';
+import { HeaderService } from './header.service';
+import { Observable } from 'rxjs';
+import { DialogConfirmYesNoComponent } from './commom/dialog-confirm-yes-no/dialog-confirm-yes-no.component';
+import { BreadcrumbService } from '../../shared/breadcrumb/breadcrumb.service';
+import { MAT_SNACK_BAR_DATA, MatSnackBar } from '@angular/material/snack-bar';
 
 interface notifications {
   id: number;
@@ -98,16 +105,131 @@ export class HeaderComponent {
     },
   ];
 
+  infoMe: any;
   constructor(
     private vsidenav: CoreService,
     public dialog: MatDialog,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private service: HeaderService,
+    private breadcrumbService: BreadcrumbService,
   ) {
     translate.setDefaultLang('en');
+    this.infoMe = {
+      email: localStorage.getItem('gmail'),      
+    }
+    console.log('this.infoMe', this.infoMe);
+  }
+  
+  protected dataFriends$: Observable<any | null> 
+  
+  private _snackBar = inject(MatSnackBar);
+
+  durationInSeconds = 3;
+  openSnackBar(data: any, status: string) {
+
+    this._snackBar.openFromComponent(SnackbarComponent, {
+      duration: this.durationInSeconds * 1000,
+      data: { message: data, status: status }, // Truyền dữ liệu
+    });
+  }
+  private audio = new Audio();
+  ngOnInit(): void {
+    
+    
+    console.log('Component initialized');
+    this.service.onMessage((data) => {
+      this.audio.src = './assets/mp3/notification-18-270129.mp3';
+      this.audio.play();
+      console.log('Message received:', data);
+      this.service.getEmail().subscribe();  
+      this.service.getDataFriendsNotAccepted().subscribe();
+      this.breadcrumbService.getDataFriendsAccepted().subscribe();
+      this.openSnackBar(data.message, 'warning');   
+      
+    });
+
+    this.dataFriends$ = this.service.dataFriends$;  
+
+    this.service.getDataFriendsNotAccepted().subscribe();    
+  }
+
+  acceptInvitation(recipient_gmail:any){
+    console.log('recipient_gmail', recipient_gmail)
+    const dialogRef = this.dialog.open(DialogConfirmYesNoComponent, {
+      width: '500px',
+      // enterAnimationDuration,
+      // exitAnimationDuration,
+      data:{
+        title: 'Xoá báo cáo',
+        message: 'Bạn có chắc muốn xoá báo cáo này ?',
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed', result);
+      if(result) {     
+        this.service.acceptFriend(recipient_gmail).subscribe(
+          (res: any) => {            
+            this.service.getDataFriendsNotAccepted().subscribe();  
+            this.breadcrumbService.getDataFriendsAccepted().subscribe();
+            this.service.socketSendMess(recipient_gmail,'đã chấp nhận lời mời kết bạn').subscribe();
+          },
+          (error: any) => {
+            console.log(error);
+          }
+        );     
+       
+      }
+      
+    });
+  }
+
+  cancelInvitation(recipient_gmail:any){
+    console.log('recipient_gmail', recipient_gmail)
+    const dialogRef = this.dialog.open(DialogConfirmYesNoComponent, {
+      width: '500px',
+      // enterAnimationDuration,
+      // exitAnimationDuration,
+      data:{
+        title: 'Xoá báo cáo',
+        message: 'Bạn có chắc muốn xoá báo cáo này ?',
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed', result);
+      if(result) {     
+        this.service.cancelFriend(recipient_gmail).subscribe(
+          (res: any) => {
+            
+            this.service.getDataFriendsNotAccepted().subscribe(); 
+            this.service.socketSendMess(recipient_gmail, 'đã từ chối lời mời kết bạn').subscribe();
+             
+          },
+          (error: any) => {
+            console.log(error);
+          }
+        );     
+       
+      }
+      
+    });
+
+  }
+
+  testSocketIo(){
+    console.log('Test socket IO');
+    this.service.sendMessage({ user: 'Nam', content: 'Xin chào!' });
   }
 
   openDialog() {
     const dialogRef = this.dialog.open(AppSearchDialogComponent);
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(`Dialog result: ${result}`);
+    });
+  }
+
+  openSearchFriendDialog() {
+    const dialogRef = this.dialog.open(AppSearchFriendDialogComponent);
 
     dialogRef.afterClosed().subscribe((result) => {
       console.log(`Dialog result: ${result}`);
@@ -150,7 +272,7 @@ export class HeaderComponent {
       title: 'Roman Joined the Team!',
       subtitle: 'Congratulatse him',
     },
-  ];
+  ]; 
 
   profiledd: profiledd[] = [
     {
@@ -294,4 +416,100 @@ export class AppSearchDialogComponent {
   // filtered = this.navItemsData.find((obj) => {
   //   return obj.displayName == this.searchinput;
   // });
+}
+
+@Component({
+  selector: 'search-friend-dialog',
+  standalone: true,
+  imports: [RouterModule, MaterialModule, TablerIconsModule, FormsModule, CommonModule],
+  templateUrl: 'search-friend-dialog.component.html',
+})
+export class AppSearchFriendDialogComponent {
+  constructor(
+    private service: HeaderService,
+    private dialog: MatDialog,
+  ) {}
+  searchText: string = '';
+  navItems = navItems;
+  dataEmail$: Observable<any | null> 
+
+  navItemsData = navItems.filter((navitem) => navitem.displayName);
+
+  // filtered = this.navItemsData.find((obj) => {
+  //   return obj.displayName == this.searchinput;
+  // });
+
+  ngOnInit(): void {
+    this.dataEmail$ = this.service.dataEmail$;
+    this.dataEmail$.subscribe((res: any) => {
+      console.log('res data email', res);
+      
+    })
+    this.service.getEmail().subscribe();   
+  }
+
+  
+
+  addFriend(item: any) {
+
+
+    const dialogRef = this.dialog.open(DialogConfirmYesNoComponent, {
+      width: '500px',
+      // enterAnimationDuration,
+      // exitAnimationDuration,
+      data:{
+        title: 'Xoá báo cáo',
+        message: 'Bạn có chắc muốn xoá báo cáo này ?',
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed', result);
+      if(result) {                    
+        this.service.addFriend(item.email).subscribe(
+          (res: any) => {
+            
+            this.service.getEmail().subscribe();  
+            this.service.getDataFriendsNotAccepted().subscribe();
+            this.service.socketSendMess(item.email, 'đã gửi lời mời kết bạn').subscribe();
+          },
+          (error: any) => {
+            console.log(error);
+          }
+        );
+      }
+      
+    });    
+  }
+
+
+  
+
+
+
+}
+
+
+
+
+@Component({
+  selector: 'sussess-snackbar',
+  template: `
+   <span [class]="data.status">{{ data.message }}</span>
+
+  `,
+  styles: `
+    .success {
+      color: #13deb9 !important;
+    }
+    .error {
+      color: red !important;
+    }
+    .warning {
+      color: #FFC107 !important;
+    }
+  `,
+  standalone: true,
+})
+export class SnackbarComponent {
+  constructor(@Inject(MAT_SNACK_BAR_DATA) public data: any) { }
 }
