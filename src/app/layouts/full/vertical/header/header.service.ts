@@ -34,6 +34,29 @@ export class HeaderService {
         });
     }
 
+    getAIResponse(message: string) {
+        const headers = new HttpHeaders({
+            'Authorization': `Bearer ${localStorage.getItem('tokens')}`
+        });
+        const body = {
+            message: message
+        };
+        const response = this.httpClient.post<any>(`${this.url}/auth/connect-ai`, body, { headers: headers });
+        return response.pipe(
+            map((res: any) => {
+                console.log('res version', res);
+                return res
+            }),
+            catchError((error) => {
+                console.log(error.statusText);
+                if (error.statusText === 'Unauthorized') {
+                    localStorage.clear();
+                    this.router.navigate(['/authentication/login']);
+                }
+                return throwError(() => error);
+            })
+        )
+    }
     
 
     sendMessage(message: any) {

@@ -54,11 +54,13 @@ export class AppBreadcrumbComponent {
   }
 
   protected dataFriends$: Observable<any | null> 
-
+  protected dataPlan$: Observable<any | null> 
   ngOnInit(): void {
     this.dataFriends$ = this.breadcrumbService.dataFriends$;  
+    this.dataPlan$ = this.breadcrumbService.dataPlan$;
     
-    this.breadcrumbService.getDataFriendsAccepted().subscribe();    
+    this.breadcrumbService.getDataFriendsAccepted().subscribe();  
+    this.breadcrumbService.getDataPlan().subscribe();
   }
 
   cancelInvitation(recipient_gmail:any){

@@ -133,8 +133,7 @@ export class HeaderComponent {
     });
   }
   private audio = new Audio();
-  ngOnInit(): void {
-    
+  ngOnInit(): void {   
     
     console.log('Component initialized');
     this.service.onMessage((data) => {
@@ -151,6 +150,49 @@ export class HeaderComponent {
     this.dataFriends$ = this.service.dataFriends$;  
 
     this.service.getDataFriendsNotAccepted().subscribe();    
+  }
+
+  aiResponse: string = '';
+  isLoading = false;
+
+  getAIResponse() {
+    this.isLoading = true;
+    this.aiResponse = localStorage.getItem('aiResponse') || '';
+    if(this.aiResponse === '') {
+      const message = 'Cập nhật giá vàng, giá đất thành phố, giá bitcoin';
+    this.service.getAIResponse(message).subscribe((res: any) => {
+      
+      console.log('res ai response', res);
+      this.aiResponse = res.response.content;
+      localStorage.setItem('aiResponse', this.aiResponse);
+      this.isLoading = false;
+    });
+    }
+    else {
+      setTimeout(() => {
+        this.isLoading = false;
+      }, 3000);
+    }
+  }
+
+  formatAIResponse(text: string) {
+    if (!text) return '';
+    
+    return text
+      // Convert newlines to <br>
+      .replace(/\n\n/g, '</p><p>')
+      .replace(/\n/g, '<br>')
+      // Convert markdown headings
+      .replace(/### \*\*(.*?)\*\*/g, '<h3>$1</h3>')
+      .replace(/#### \*\*(.*?)\*\*/g, '<h4>$1</h4>')
+      // Convert markdown bold
+      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+      // Convert markdown italic
+      .replace(/\*(.*?)\*/g, '<em>$1</em>')
+      // Convert markdown links
+      .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank">$1</a>')
+      // Wrap in paragraph tags
+      .replace(/^(.+)$/, '<p>$1</p>');
   }
 
   acceptInvitation(recipient_gmail:any){

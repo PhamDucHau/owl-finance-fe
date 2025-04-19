@@ -1,5 +1,5 @@
-@if(pageInfo?.['title'] != 'eCommerce'){
-<div class="bg-light-primary rounded p-y-30 p-x-24 m-b-30 overflow-hidden">
+@if(pageInfo?.['title']){
+<div class="bg-white rounded p-y-30 p-x-24 m-b-30 overflow-hidden">
   <div class="row">
     <div class="col-sm-2">
       <h4 class="page-title m-0 f-s-20 f-w-600 m-b-16">
@@ -22,10 +22,10 @@
         </ul>
       </div>
     </div>
-    <div class="col-sm-8 p-y-16">
-      <div class="row">
+    <!-- <div class="p-y-16">
+      <div class="d-flex align-items-center justify-content-center gap-10 ">
         @for (item of dataFriends$ | async; track item.recipient_gmail) {
-        <div class="col-sm-6 col-md-3  p-x-16 p-y-8" style="border: 2px solid navy; border-radius: 8px;">
+        <div style="border: 2px solid navy; border-radius: 8px;" class="p-10">
           <div class="d-flex align-items-center">
             <img class="rounded-circle" src="assets/images/profile/user-2.jpg" width="40" />
             <div class="m-l-16">
@@ -34,7 +34,7 @@
               </p>
               <div class="d-flex align-items-center justify-content-between">
                 <small class="mat-body-1 f-s-14">
-                  10tr VNĐ                  
+                  {{ item.total | number:'1.0-0' }} VNĐ                  
                 </small>
                 <small class="mat-body-1 f-s-14">
                   12%                 
@@ -47,7 +47,8 @@
                 color: red;                
               }
               .text-ellipsis {
-                max-width: 140px;
+                max-width: 200px;
+                width: 200px;
                 /* hoặc bất kỳ giá trị nào bạn muốn */
                 white-space: nowrap;
                 overflow: hidden;
@@ -61,11 +62,36 @@
         }
       </div>
     </div>
-    <div class="col-sm-2 text-right position-relative">
-      <div class="breadcrumb-icon">
-        <img src="/assets/images/breadcrumb/ChatBc.png" alt="breadcrumb" width="165" />
-      </div>
-    </div>
+    <div class="col-sm-2 text-center position-relative">  
+      <div >
+        
+        <div class="d-flex align-items-center justify-content-center gap-10">
+          
+          <div style="width: 100%; border: 1px solid navy; border-radius: 8px;" class="p-10">
+            <img [src]="(dataPlan$ | async)[0]?.image" alt="breadcrumb" width="80" />
+            <h4 class="page-title m-0 f-s-14 f-w-600 m-b-4">
+             {{ (dataPlan$ | async)[0]?.name }} <span class="m-l-10 mat-subtitle-1 f-s-12 m-t-0"> {{ (dataPlan$ | async)[0]?.price | number:'1.0-0' }} VNĐ</span>
+            </h4>
+            
+            <div class="d-flex align-items-center justify-content-center gap-4">
+              <p class="f-w-600 mat-subtitle-1 f-s-12 m-t-0">{{ (dataPlan$ | async)[0]?.date_start }}</p>
+              <p class="f-w-600 mat-subtitle-1 f-s-10 m-t-0"> - </p>
+              <p class="f-w-600 mat-subtitle-1 f-s-12 m-t-0">{{ (dataPlan$ | async)[0]?.date_end }}</p>           
+            </div>
+          </div>
+          <div>
+            <i-tabler name="device-tablet-plus" class="icon-30 cursor-pointer hover-icon-edit"></i-tabler> <br>
+            <i-tabler name="edit" class="icon-30 cursor-pointer hover-icon-edit"></i-tabler> <br>
+            <i-tabler name="trash" class="icon-30 cursor-pointer hover-icon-trash"></i-tabler> 
+          </div>
+          
+        </div>
+        
+        
+      </div>  
+      
+      
+    </div> -->
   </div>
 </div>
 }

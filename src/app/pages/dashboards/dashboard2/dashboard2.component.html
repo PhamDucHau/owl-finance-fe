@@ -1,49 +1,71 @@
-<div class="row">
-  <div class="col-lg-8">
-    <app-welcome-card></app-welcome-card>
-  </div>
-  <div class="col-lg-4">
-    <div class="row">
-      <div class="col-sm-6">
-        <app-payments></app-payments>
-      </div>
-      <div class="col-sm-6">
-        <app-products></app-products>
-      </div>
-    </div>
-  </div>
-  <div class="col-lg-4">
-    <app-revenue-updates-two></app-revenue-updates-two>
-  </div>
-  <div class="col-lg-4">
-    <app-sales-overview></app-sales-overview>
-  </div>
-  <div class="col-lg-4">
-    <div class="row">
-      <div class="col-sm-6">
-        <app-total-earnings></app-total-earnings>
-      </div>
-      <div class="col-sm-6">
-        <app-sales-profit></app-sales-profit>
-      </div>
-      <div class="col-12">
-        <app-monthly-earnings-two></app-monthly-earnings-two>
-      </div>
-    </div>
-  </div>
-  <div class="col-lg-4">
-    <app-weekly-stats></app-weekly-stats>
-  </div>
-  <div class="col-lg-4">
-    <app-yearly-sales></app-yearly-sales>
-  </div>
-  <div class="col-lg-4">
-    <app-payment-gateways></app-payment-gateways>
-  </div>
-  <div class="col-lg-4">
-    <app-recent-transactions></app-recent-transactions>
-  </div>
-  <div class="col-lg-8">
-    <app-product-performance></app-product-performance>
-  </div>
+<div class="m-t-24 d-flex justify-content-center overlay" *ngIf="loadingSpinner">
+  <mat-spinner></mat-spinner>
 </div>
+
+
+<div class="container-fluid p-4">
+ 
+  <div class="row">
+    <!-- Left side: Account list -->
+    <div class="col-lg-8">
+      <mat-card class="cardWithShadow mb-4" *ngFor="let account of dataFriends$ | async">
+        <mat-card-content>
+          <div class="d-flex align-items-center justify-content-between">
+            <img src="assets/images/profile/user-2.jpg" alt="User avatar" class="rounded-circle m-r-16" width="48" height="48">
+            <div class="ms-3 flex-grow-1">
+              <h3 class="mat-h3 mb-0">{{account.recipient_gmail}}</h3>
+              <div class="d-flex align-items-center">
+                <span class="text-muted me-3 font-weight-bold m-r-16">{{account.total}} VND</span>
+                <span class="text-muted me-3 font-weight-bold">5 % Save</span>
+              </div>
+            </div>
+            <div>
+              
+              <i-tabler (click)="cancelInvitation(account.recipient_gmail)" name="trash" class="icon-20 cursor-pointer hover-icon-trash"></i-tabler>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <iframe src="http://103.82.38.96:8065/" width="100%" height="auto"></iframe>
+    </div>
+
+    <!-- Right side: Subscription details -->
+    <div class="col-lg-4">
+      <mat-card class="cardWithShadow">
+        <mat-card-content>
+          <div class="d-flex justify-content-center mt-3">
+            <button mat-icon-button class="me-2">
+              <i-tabler name="device-tablet-plus" class="icon-30 cursor-pointer hover-icon-edit"></i-tabler>
+            </button>
+            
+            <button mat-icon-button>
+              <i-tabler name="edit" class="icon-30 cursor-pointer hover-icon-edit"></i-tabler>
+            </button>
+            <button mat-icon-button>
+              <i-tabler name="trash" class="icon-30 cursor-pointer hover-icon-trash"></i-tabler>
+            </button> 
+          </div>
+          <div class="text-center mb-4">
+            <img src="https://hoangphucphoto.com/wp-content/uploads/2024/02/anh-xe-2.jpeg" alt="Car" class="img-fluid mb-3" style="max-width: 300px; border-radius: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+          </div>
+          
+          <div class="text-center">
+            <h2 class="mat-h2">{{ (dataPlan$ | async)[0]?.price | number:'1.0-0' }} VNĐ</h2>
+            <p class="text-muted">{{ (dataPlan$ | async)[0]?.date_start }} — {{ (dataPlan$ | async)[0]?.date_end }}</p>
+            <p class="text-muted">5 % Save</p>
+          </div>
+
+          
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+
+
+  
+</div>
+
+
+
+

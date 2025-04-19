@@ -12,12 +12,12 @@ export const DashboardsRoutes: Routes = [
         path: 'dashboard1',
         component: AppDashboard1Component,
         data: {
-          title: 'Analytical',
+          title: 'Home',
           urls: [
-            { title: 'Dashboard', url: '/dashboards/dashboard1' },
-            { title: 'Analytical' },
+            { title: 'Home', url: '/dashboards/dashboard1' },
+            { title: 'Home' },
           ],
-        },
+        },  
       },
       {
         path: 'dashboard2',
@@ -25,8 +25,8 @@ export const DashboardsRoutes: Routes = [
         data: {
           title: 'eCommerce',
           urls: [
-            { title: 'Dashboard', url: '/dashboards/dashboard1' },
-            { title: 'eCommerce' },
+            { title: 'Competition', url: '/dashboards/dashboard2' },
+            { title: 'Competition' },
           ],
         },
       },

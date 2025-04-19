@@ -110,8 +110,13 @@
                             </div>
                         </div>
                         <div class="p-16">
-                            <div class="due-date-text text-left">
-                                Due Date: {{card.due_date}}
+                            <div class="d-flex justify-content-between">
+                                <div class="due-date-text text-left">
+                                    Due Date: {{card.due_date}}
+                                </div>
+                                <div class="dept-money-text text-left ">
+                                    Remaining Month: {{card.remaining_month}}
+                                </div>
                             </div>
     
                             <div class="progress-container m-t-30">
@@ -147,9 +152,7 @@
                                 Dept Money: {{card.money_per_month | number}} VNĐ/Month
                             </div>
     
-                            <div class="dept-money-text text-left m-t-10">
-                                Remaining Month: {{card.remaining_month}}
-                            </div>
+                            
     
                             <div class="description-text text-left m-t-16">
                                 You can description shopping details below:

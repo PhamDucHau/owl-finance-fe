@@ -96,12 +96,12 @@
 
       <main [ngClass]="{
         maxWidth: options.boxed
-      }" style="background-color: #AA80F9; padding: 20px" >
+      }" style="background-color: #AA80F9; padding: 20px; height: 100%;" >
         <app-breadcrumb></app-breadcrumb>
         <!-- ============================================================== -->
         <!-- Outlet -->
         <!-- ============================================================== -->
-        <router-outlet></router-outlet>
+        <router-outlet ></router-outlet>
         <div class="customizerBtn">
           <button mat-fab color="primary" (click)="customizerRight.toggle()">
             <mat-icon>settings</mat-icon>
@@ -111,7 +111,7 @@
     </mat-sidenav-content>
 
     <mat-sidenav #customizerRight mode="over" position="end">
-      <div class="p-x-16 p-y-20 d-flex align-items-center justify-content-between">
+      <div class="p-x-16 p-y-20 d-flex align-items-center justify-content-between">        
         <h3 class="mat-subtitle-1 f-s-21 f-w-600">Settings</h3>
         <button class="d-lg-none" mat-button (click)="customizerRight.toggle()">
           Close
@@ -120,6 +120,7 @@
       <mat-divider></mat-divider>
 
       <app-customizer (optionsChange)="receiveOptions($event)"></app-customizer>
+      
     </mat-sidenav>
   </mat-sidenav-container>
 
