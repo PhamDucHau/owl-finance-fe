@@ -16,6 +16,59 @@ export class DashboardsService {
   public dataCards$: Observable<any | null> =
     this.dataCardsDisplay.asObservable();
 
+  
+    private dataFriendsDisplay = new BehaviorSubject<any | null>(null);
+        public dataFriends$: Observable<any | null> =
+            this.dataFriendsDisplay.asObservable();
+    
+    private dataPlanDisplay = new BehaviorSubject<any | null>(null);
+    public dataPlan$: Observable<any | null> =
+        this.dataPlanDisplay.asObservable();
+
+    getDataPlan() {
+        const headers = new HttpHeaders({
+            'Authorization': `Bearer ${localStorage.getItem('tokens')}`
+        });
+        const response = this.httpClient.get<any>(`${this.url}/auth/plan/get-all`, { headers: headers });
+        return response.pipe(   
+            tap((res: any) => {
+                this.dataPlanDisplay.next(res);
+            }),
+            catchError((error) => {
+                console.log(error.statusText);
+                return throwError(() => error);
+            })
+        )
+    }
+
+
+
+
+
+
+    getDataFriendsAccepted() {
+            const headers = new HttpHeaders({
+                'Authorization': `Bearer ${localStorage.getItem('tokens')}`
+            });
+            const response = this.httpClient.get<any>(`${this.url}/auth/friends/accepted`, { headers: headers });
+            return response.pipe(
+                tap((res: any) => {
+                    console.log('res version', res);
+                    this.dataFriendsDisplay.next(res);
+                }),
+                catchError((error) => {
+                    console.log(error.statusText);
+                    if (error.statusText === 'Unauthorized') {
+                        localStorage.clear();
+                        this.router.navigate(['/authentication/login']);
+                    }
+                    return throwError(() => error);
+                })
+            )
+        }
+
+  
+
 
   // getUser() {
   //   const headers = new HttpHeaders({

@@ -88,6 +88,244 @@
     <i-tabler name="grid-dots" class="icon-20 d-flex"></i-tabler>
   </button>
 
+  
+
+  <!-- --------------------------------------------------------------- -->
+  <!-- connet AI -->
+  <!-- --------------------------------------------------------------- -->
+  <div class="ai-button-container">
+    <span class="ai-title " >Cập nhật tin tài chính với AI ...</span>
+    <button mat-icon-button [matMenuTriggerFor]="connetmenu" aria-label="connet AI" (click)="getAIResponse()"
+    [class.loading]="isLoading" class="ai-button">
+    <i-tabler name="robot-face" class="icon-20 cursor-pointer hover-icon-edit" 
+      [class.color-shift]="!isLoading" [class.bounce-animation]="!isLoading"></i-tabler>
+</button>
+  </div>
+  <mat-menu #connetmenu="matMenu" class="topbar-dd cardWithShadow">
+    <div class="ai-response p-32">
+      @if(isLoading) {
+      <div class="loading-container">
+        <div class="loading-dots">
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+        </div>
+        <p class="loading-text">AI đang suy nghĩ...</p>
+      </div>
+      } @else {
+      <p [innerHTML]="formatAIResponse(aiResponse)"></p>
+      }
+    </div>
+
+    <style>
+      .bounce-animation {
+    animation: bounceUpDown 2s ease-in-out infinite;
+  }
+
+  @keyframes bounceUpDown {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-5px);
+    }
+  }
+      .ai-button-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .ai-title {
+    position: absolute;
+    top: 30px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #1e88e5;
+  }
+
+  .blink-text {
+    animation: blinkAnimation 2s infinite;
+  }
+
+  @keyframes blinkAnimation {
+    0% { opacity: 1; }
+    50% { opacity: 0.3; }
+    100% { opacity: 1; }
+  }
+      .loading-container {
+        text-align: center;
+        padding: 20px;
+      }
+
+      .loading-dots {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+        margin-bottom: 10px;
+      }
+
+      .dot {
+        width: 12px;
+        height: 12px;
+        background: #ff4444;
+        border-radius: 50%;
+        animation: bounce 1s infinite;
+      }
+
+      .dot:nth-child(2) {
+        animation-delay: 0.2s;
+        background: #ff8c00;
+      }
+
+      .dot:nth-child(3) {
+        animation-delay: 0.4s;
+        background: #ffd700;
+      }
+
+      @keyframes bounce {
+
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+
+      .loading-text {
+        color: #666;
+        font-size: 14px;
+        margin: 0;
+        animation: colorPulse 2s infinite;
+      }
+
+      @keyframes colorPulse {
+
+        0%,
+        100% {
+          opacity: 1;
+        }
+
+        50% {
+          opacity: 0.5;
+        }
+      }
+
+      .ai-button {
+        position: relative;
+        overflow: hidden;
+      }
+
+      .ai-button .color-shift {
+        animation: colorShift 3s infinite;
+      }
+
+      @keyframes colorShift {
+        0% {
+          color: red;      
+          
+          /* margin-top: 0px; */
+          /* Đỏ */
+        }
+
+        33% {
+          color: green;
+          /* margin-top: 5px; */
+          
+          /* Cam */
+        }
+
+        66% {
+          color: black;
+          /* margin-top: 5px; */
+          
+          /* Vàng */
+        }
+
+        100% {
+          color: red;
+          /* margin-top: 0px; */
+          
+
+          /* Trở lại đỏ */
+        }
+      }
+
+      .loading-spinner {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 20px;
+        height: 20px;
+        border: 2px solid #ff4444;
+        border-radius: 50%;
+        border-top-color: transparent;
+        animation: spin 1s linear infinite;
+      }
+
+      @keyframes spin {
+        to {
+          transform: translate(-50%, -50%) rotate(360deg);
+        }
+      }
+
+      .ai-button.loading .icon-20 {
+        opacity: 0.5;
+      }
+
+      .ai-response {
+        max-width: 500px;
+        font-size: 14px;
+        line-height: 1.5;
+      }
+
+      .ai-response h3 {
+        color: #1e88e5;
+        font-size: 16px;
+        font-weight: 600;
+        margin: 16px 0 8px;
+      }
+
+      .ai-response h4 {
+        font-size: 15px;
+        font-weight: 600;
+        margin: 12px 0 8px;
+      }
+
+      .ai-response p {
+        margin: 8px 0;
+      }
+
+      .ai-response ul {
+        margin: 8px 0;
+        padding-left: 20px;
+      }
+
+      .ai-response em {
+        color: #666;
+        font-style: italic;
+      }
+
+      .ai-response strong {
+        font-weight: 500;
+      }
+
+      .ai-response a {
+        color: #1e88e5;
+        text-decoration: none;
+      }
+
+      .ai-response a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </mat-menu>
+
   <!-- --------------------------------------------------------------- -->
   <!-- langugage Dropdown -->
   <!-- --------------------------------------------------------------- -->
@@ -104,15 +342,14 @@
     </button>
     }
   </mat-menu>
-
-  <!-- --------------------------------------------------------------- -->
   <!-- Friend Dropdown -->
   <!-- --------------------------------------------------------------- -->
 
   <!-- <button (click)="testSocketIo()">Test Socket IO</button> -->
 
   <button mat-icon-button [matMenuTriggerFor]="friendmenu" #menuTrigger="matMenuTrigger" aria-label="Friends">
-    <i-tabler class="d-flex" name="users" [matBadge]="(dataFriends$ | async)?.length" matBadgeColor="primary"></i-tabler>
+    <i-tabler class="d-flex" name="users" [matBadge]="(dataFriends$ | async)?.length"
+      matBadgeColor="primary"></i-tabler>
   </button>
   <mat-menu (click)="$event.stopPropagation()" #friendmenu="matMenu" class="topbar-dd cardWithShadow">
     <div (click)="$event.stopPropagation()" class="d-flex align-items-center p-x-32 p-y-8">
@@ -120,37 +357,38 @@
       <!-- <span class="m-l-auto">
         <span class="bg-primary text-white p-x-8 p-y-4 f-w-500 rounded f-s-12">{{ friends.length }} new</span>
       </span> -->
-    </div>    
+    </div>
 
     @for(friend of dataFriends$ | async; track friend.title) {
-      @if(friend.status === 'sent') {
-        <div (click)="$event.stopPropagation()" mat-menu-item class="p-x-32 p-y-8">
-          <div (click)="$event.stopPropagation()" class="d-flex align-items-center">
-            <img src="/assets/images/profile/user-1.jpg" class="rounded-circle" width="48" />
-            <div class="m-l-16">
-              <h5 class="f-s-14 f-w-600 m-0 mat-subtitle-1">
-                {{ friend.recipient_gmail }}
-              </h5>
-              <div class="d-flex gap-8">
-                <!-- <button mat-stroked-button color="primary" class="small-button" >
+    @if(friend.status === 'sent') {
+    <div (click)="$event.stopPropagation()" mat-menu-item class="p-x-32 p-y-8">
+      <div (click)="$event.stopPropagation()" class="d-flex align-items-center">
+        <img src="/assets/images/profile/user-1.jpg" class="rounded-circle" width="48" />
+        <div class="m-l-16">
+          <h5 class="f-s-14 f-w-600 m-0 mat-subtitle-1">
+            {{ friend.recipient_gmail }}
+          </h5>
+          <div class="d-flex gap-8">
+            <!-- <button mat-stroked-button color="primary" class="small-button" >
                  Đã gửi lời mời
                 </button> -->
-                <button (click)="cancelInvitation(friend.recipient_gmail)" mat-stroked-button color="warn" class="small-button" >
-                  Huỷ lời mời
-                </button>
-                
-              </div>
-              <style>
-                .small-button {
-                  padding: 4px 12px !important;
-                  font-size: 12px !important;
-                  min-width: 80px !important;
-                }
-              </style>
-            </div>
+            <button (click)="cancelInvitation(friend.recipient_gmail)" mat-stroked-button color="warn"
+              class="small-button">
+              Huỷ lời mời
+            </button>
+
           </div>
+          <style>
+            .small-button {
+              padding: 4px 12px !important;
+              font-size: 12px !important;
+              min-width: 80px !important;
+            }
+          </style>
         </div>
-      }
+      </div>
+    </div>
+    }
     }
 
     <div (click)="$event.stopPropagation()" class="d-flex align-items-center p-x-32 p-y-8">
@@ -158,40 +396,42 @@
       <!-- <span class="m-l-auto">
         <span class="bg-primary text-white p-x-8 p-y-4 f-w-500 rounded f-s-12">{{ friends.length }} new</span>
       </span> -->
-    </div>    
+    </div>
 
     @for(friend of dataFriends$ | async; track friend.title) {
-      @if(friend.status === 'pending') {
-        <div (click)="$event.stopPropagation()" mat-menu-item class="p-x-32 p-y-8">
-          <div class="d-flex align-items-center">
-            <img src="/assets/images/profile/user-1.jpg" class="rounded-circle" width="48" />
-            <div class="m-l-16">
-              <h5 class="f-s-14 f-w-600 m-0 mat-subtitle-1">
-                {{ friend.recipient_gmail }}
-              </h5>
-              <div class="d-flex gap-8">
-                <button (click)="acceptInvitation(friend.recipient_gmail)" mat-stroked-button color="primary" class="small-button" >
-                 Chấp nhận
-                </button>
-                <button (click)="cancelInvitation(friend.recipient_gmail)" mat-stroked-button color="warn" class="small-button" >
-                  Từ chối
-                </button>
-                
-              </div>
-              <style>
-                .small-button {
-                  padding: 4px 12px !important;
-                  font-size: 12px !important;
-                  min-width: 80px !important;
-                }
-              </style>
-            </div>
+    @if(friend.status === 'pending') {
+    <div (click)="$event.stopPropagation()" mat-menu-item class="p-x-32 p-y-8">
+      <div class="d-flex align-items-center">
+        <img src="/assets/images/profile/user-1.jpg" class="rounded-circle" width="48" />
+        <div class="m-l-16">
+          <h5 class="f-s-14 f-w-600 m-0 mat-subtitle-1">
+            {{ friend.recipient_gmail }}
+          </h5>
+          <div class="d-flex gap-8">
+            <button (click)="acceptInvitation(friend.recipient_gmail)" mat-stroked-button color="primary"
+              class="small-button">
+              Chấp nhận
+            </button>
+            <button (click)="cancelInvitation(friend.recipient_gmail)" mat-stroked-button color="warn"
+              class="small-button">
+              Từ chối
+            </button>
+
           </div>
+          <style>
+            .small-button {
+              padding: 4px 12px !important;
+              font-size: 12px !important;
+              min-width: 80px !important;
+            }
+          </style>
         </div>
-      }
+      </div>
+    </div>
+    }
     }
 
-    
+
 
     <div class="p-y-12 p-x-32">
       <button mat-flat-button color="primary" class="w-100" (click)="openSearchFriendDialog()">
