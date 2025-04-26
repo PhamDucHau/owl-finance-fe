@@ -1,5 +1,5 @@
 import { BreakpointObserver, MediaMatcher } from '@angular/cdk/layout';
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, signal, ViewChild, ViewEncapsulation, ElementRef, AfterViewChecked } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { MatSidenav, MatSidenavContent } from '@angular/material/sidenav';
 import { CoreService } from 'src/app/services/core.service';
@@ -20,6 +20,8 @@ import { AppHorizontalHeaderComponent } from './horizontal/header/header.compone
 import { AppHorizontalSidebarComponent } from './horizontal/sidebar/sidebar.component';
 import { AppBreadcrumbComponent } from './shared/breadcrumb/breadcrumb.component';
 import { CustomizerComponent } from './shared/customizer/customizer.component';
+import { FormsModule } from '@angular/forms';
+import { FullService } from './full.service';
 
 const MOBILE_VIEW = 'screen and (max-width: 768px)';
 const TABLET_VIEW = 'screen and (min-width: 769px) and (max-width: 1024px)';
@@ -41,6 +43,13 @@ interface quicklinks {
   link: string;
 }
 
+interface ChatMessage {
+  text: string;
+  sender: string;
+  timestamp: Date;
+  isMe: boolean;
+}
+
 @Component({
   selector: 'app-full',
   standalone: true,
@@ -57,12 +66,13 @@ interface quicklinks {
     AppHorizontalSidebarComponent,
     AppBreadcrumbComponent,
     CustomizerComponent,
+    FormsModule,
   ],
   templateUrl: './full.component.html',
-  styleUrls: [],
+  styleUrls: ['./full.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class FullComponent implements OnInit {
+export class FullComponent implements OnInit, AfterViewChecked {
   navItems = navItems;
 
   @ViewChild('leftsidenav')
@@ -76,6 +86,18 @@ export class FullComponent implements OnInit {
   private isContentWidthFixed = true;
   private isCollapsedWidthFixed = false;
   private htmlElement!: HTMLHtmlElement;
+  messageText: string = '';
+  aiMessageText: string = '';
+  aiMessages: ChatMessage[] = [
+    {
+      text: 'Xin chào! Tôi là AI trợ lý. Tôi có thể giúp gì cho bạn?',
+      sender: 'AI Assistant',
+      timestamp: new Date(),
+      isMe: false
+    }
+  ];
+
+  @ViewChild('chatMessages') private chatMessages!: ElementRef;
 
   get isOver(): boolean {
     return this.isMobileScreen;
@@ -188,12 +210,28 @@ export class FullComponent implements OnInit {
     },
   ];
 
+  messages: ChatMessage[] = [
+    {
+      text: 'Xin chào!',
+      sender: 'System',
+      timestamp: new Date(),
+      isMe: false
+    },
+    {
+      text: 'Bạn cần giúp đỡ gì không?',
+      sender: 'System',
+      timestamp: new Date(),
+      isMe: false
+    }
+  ];
+
   constructor(
     private settings: CoreService,
     private mediaMatcher: MediaMatcher,
     private router: Router,
     private breakpointObserver: BreakpointObserver,
-    private navService: NavService
+    private navService: NavService,
+    private service: FullService
   ) {
     this.htmlElement = document.querySelector('html')!;
     this.layoutChangesSubscription = this.breakpointObserver
@@ -220,11 +258,20 @@ export class FullComponent implements OnInit {
       });
   }
 
-  ngOnInit(): void {}
+  message$ = this.service.message$;
+  messagesAI: any[] = [];
+
+  ngOnInit(): void {
+    this.service.getMessage().subscribe()
+    this.message$.subscribe((res: any) => {
+      this.messagesAI = res;
+    })
+    console.log('this.message$', this.message$)
+  }
 
   ngOnDestroy() {
     this.layoutChangesSubscription.unsubscribe();
-  }
+  }  
 
   toggleCollapsed() {
     this.isContentWidthFixed = false;
@@ -258,6 +305,70 @@ export class FullComponent implements OnInit {
     } else {
       this.htmlElement.classList.remove('dark-theme');
       this.htmlElement.classList.add('light-theme');
+    }
+  }
+
+  sendMessage() {
+    if (this.messageText.trim()) {
+      this.messages.push({
+        text: this.messageText,
+        sender: 'Me',
+        timestamp: new Date(),
+        isMe: true
+      });
+      this.messageText = '';
+    }
+  }
+
+  sendAIMessage() {
+    if (this.aiMessageText && this.aiMessageText.trim() !== '') {
+      // Add user message
+      // this.messages$.push({
+      //   text: this.aiMessageText,
+      //   sender: 'Me',
+      //   timestamp: new Date(),
+      //   isMe: true
+      // });
+      //tôi muốn push tin nhắn vừa nhắn lên trước sau khi gọi xong api thì mới load lên api của data
+      this.messagesAI.push({
+        content: this.aiMessageText,
+        sender: 'user',
+        timestamp: new Date(),
+        isMe: true
+      });
+      const message = {
+        content: this.aiMessageText,
+        sender: 'user',       
+      }
+
+      this.service.sendMessage(message).subscribe((res: any) => {
+        this.service.getMessage().subscribe()
+      });
+
+      // Simulate AI response
+      setTimeout(() => {
+        this.messagesAI.push({
+          content: 'AI đang xử lý câu hỏi của bạn...',
+          sender: 'AI',
+          timestamp: new Date(),
+          isMe: false
+        });
+      }, 1000);
+
+      this.aiMessageText = '';
+    }
+  }
+
+  ngAfterViewChecked() {
+    this.scrollToBottom();
+  }
+
+  private scrollToBottom(): void {
+    try {
+      const element = this.chatMessages.nativeElement;
+      element.scrollTop = element.scrollHeight;
+    } catch (err) {
+      console.error('Error scrolling to bottom:', err);
     }
   }
 }

@@ -107,6 +107,18 @@
             <mat-icon>settings</mat-icon>
           </button>
         </div>
+
+        <div class="customizerBtn-chat">
+          <button mat-fab color="primary" (click)="chatPopup.toggle()">
+            <mat-icon>message-circle</mat-icon>
+          </button>
+        </div>
+
+        <div class="customizerBtn-ai-chat">
+          <button mat-fab color="accent" (click)="aiChatPopup.toggle()">
+            <mat-icon>smart_toy</mat-icon>
+          </button>
+        </div>
       </main>
     </mat-sidenav-content>
 
@@ -196,4 +208,65 @@
       </div>
     </div>
   </mat-drawer>
+
+  <mat-sidenav #chatPopup mode="over" position="end" class="chat-popup">
+    <div class="chat-header d-flex align-items-center justify-content-between p-16">
+      <h3 class="mat-subtitle-1 f-s-18 f-w-600 m-0">Chat</h3>
+      <button mat-icon-button (click)="chatPopup.toggle()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    <mat-divider></mat-divider>
+    <div class="chat-content p-16">
+      <div class="chat-messages" style="height: calc(100vh - 200px); overflow-y: auto;">
+        @for(message of messages; track message) {
+          <div class="message" [ngClass]="{'message-me': message.isMe, 'message-other': !message.isMe}">
+            <div class="message-content">
+              <div class="message-text">{{message.text}}</div>
+              <div class="message-time">{{message.timestamp | date:'shortTime'}}</div>
+            </div>
+          </div>
+        }
+      </div>
+      <div class="chat-input d-flex align-items-center mt-16">
+        <mat-form-field class="w-100">
+          <input matInput placeholder="Type a message..." [(ngModel)]="messageText">
+        </mat-form-field>
+        <button mat-icon-button color="primary" class="ml-8" (click)="sendMessage()">
+          <mat-icon>send</mat-icon>
+        </button>
+      </div>
+    </div>
+  </mat-sidenav>
+
+  <mat-sidenav #aiChatPopup mode="over" position="end" class="chat-popup">
+    <div class="chat-header d-flex align-items-center justify-content-between p-16">
+      <h3 class="mat-subtitle-1 f-s-18 f-w-600 m-0">Chat với AI</h3>
+      <button mat-icon-button (click)="aiChatPopup.toggle()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    <mat-divider></mat-divider>
+    <div class="chat-content p-16">
+      <div class="chat-messages" #chatMessages style="height: calc(100vh - 200px); overflow-y: auto;">
+        @for(message of messagesAI; track message) {
+          <div class="message" [ngClass]="{'message-me': message.sender === 'user', 'message-other': message.sender === 'AI'}">
+            <div class="message-content">
+              <div class="message-text">{{message.content}}</div>
+              <div class="message-time">{{message.timestamp | date:'shortTime'}}</div>
+            </div>
+          </div>
+        }
+      </div>
+      <div class="chat-input d-flex align-items-center mt-16">
+        <mat-form-field class="w-100">
+          <input matInput placeholder="Hỏi AI..." [(ngModel)]="aiMessageText" (keyup.enter)="sendAIMessage()">
+        </mat-form-field>
+        
+        <button mat-icon-button color="accent" class="ml-8" (click)="sendAIMessage()">
+          <mat-icon>send</mat-icon>
+        </button>
+      </div>
+    </div>
+  </mat-sidenav>
 </span>
