@@ -18,6 +18,8 @@ import { BehaviorSubject } from 'rxjs';
 import { Observable } from 'rxjs';
 import { HeaderService } from 'src/app/layouts/full/vertical/header/header.service';
 import { DialogConfirmYesNoComponent } from '../common/dialog-confirm-yes-no/dialog-confirm-yes-no.component';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { DialogAddEditPlanComponent } from '../common/dialog-add-edit-plan/dialog-add-edit-plan';
 // components
 // import { AppWelcomeCardComponent } from '../../../components/dashboard2/welcome-card/welcome-card.component';
 // import { AppPaymentsComponent } from '../../../components/dashboard2/payments/payments.component';
@@ -72,7 +74,9 @@ interface Account {
     MatButtonToggleModule,
     MatProgressBarModule,
     MatMenuModule,
-    OverlayModule
+    OverlayModule,
+    MatExpansionModule,
+    
   ],
   templateUrl: './dashboard2.component.html',
   styles: [`
@@ -105,42 +109,69 @@ interface Account {
 export class AppDashboard2Component {
 
   public loadingSpinner = false;
-  accounts: Account[] = [
-    {
-      email: 'hangngochongtest@gmail.com',
-      balance: '0',
-      points: 126,
-      avatar: 'assets/images/avatar.png'
-    },
-    {
-      email: 'Hau1@gmail.com',
-      balance: '0',
-      points: 126,
-      avatar: 'assets/images/avatar.png'
-    },
-    {
-      email: 'Hau123@gmail.com',
-      balance: '0',
-      points: 126,
-      avatar: 'assets/images/avatar.png'
-    }
-  ];
+  
 
   constructor(private service: DashboardsService, private dialog: MatDialog, private headerService: HeaderService) {}
-  private dataFriendsDisplay = new BehaviorSubject<any | null>(null);
-        public dataFriends$: Observable<any | null> =
-            this.dataFriendsDisplay.asObservable();
-    
-    private dataPlanDisplay = new BehaviorSubject<any | null>(null);
-    public dataPlan$: Observable<any | null> =
-        this.dataPlanDisplay.asObservable();
+  dataFriends$: Observable<any> = this.service.dataFriends$;
+  dataPlan$: Observable<any> = this.service.dataPlan$;
 
   ngOnInit(): void {
-    this.dataFriends$ = this.service.dataFriends$;  
-    this.dataPlan$ = this.service.dataPlan$;
+    // this.dataFriends$ = this.service.dataFriends$;  
+    // this.dataPlan$ = this.service.dataPlan$;
+    
     
     this.service.getDataFriendsAccepted().subscribe();  
     this.service.getDataPlan().subscribe();
+  }
+
+  
+
+  getRemainingDays(dateEnd: any) {
+    const dateEndValue = new Date(dateEnd);
+    const currentDate = new Date();
+    const timeDiff = dateEndValue.getTime() - currentDate.getTime();
+    const days = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+    return days;
+  }
+
+  
+
+  openDialogAddPlan() {
+    console.log('openDialogAddPlan');
+    const dialogRef = this.dialog.open(DialogAddEditPlanComponent, {
+      width: '600px',
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed', result);
+      if(result) {
+        this.service.createPlan(result.data).subscribe((res: any) => {
+          console.log('res', res);
+          this.service.getDataPlan().subscribe();
+        });
+      }
+    });
+  }
+
+  deletePlan(id: any, event: any) {
+    event.stopPropagation();
+    const dialogRef = this.dialog.open(DialogConfirmYesNoComponent, {
+      width: '500px',
+      data: {
+        title: 'Xoá kế hoạch',
+        message: 'Bạn có chắc chắn muốn xoá kế hoạch này?',
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed', result);
+      if(result) { 
+        
+        
+        this.service.deletePlan(id).subscribe((res: any) => {
+          console.log('res', res);
+          this.service.getDataPlan().subscribe();
+        });
+      }
+    });
   }
 
   openDialogAddCard() {

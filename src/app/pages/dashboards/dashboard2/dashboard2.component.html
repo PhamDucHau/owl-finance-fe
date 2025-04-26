@@ -3,67 +3,86 @@
 </div>
 
 
-<div class="container-fluid p-4">
+<div style="height: calc(100vh - 182px); width: 100%; overflow: hidden;">
+  <div class="container-fluid p-4" >
  
-  <div class="row">
-    <!-- Left side: Account list -->
-    <div class="col-lg-8">
-      <mat-card class="cardWithShadow mb-4" *ngFor="let account of dataFriends$ | async">
-        <mat-card-content>
-          <div class="d-flex align-items-center justify-content-between">
-            <img src="assets/images/profile/user-2.jpg" alt="User avatar" class="rounded-circle m-r-16" width="48" height="48">
-            <div class="ms-3 flex-grow-1">
-              <h3 class="mat-h3 mb-0">{{account.recipient_gmail}}</h3>
-              <div class="d-flex align-items-center">
-                <span class="text-muted me-3 font-weight-bold m-r-16">{{account.total}} VND</span>
-                <span class="text-muted me-3 font-weight-bold">5 % Save</span>
+    <div class="row">
+      <!-- Left side: Account list -->
+      <div class="col-lg-6">
+        <mat-card class="cardWithShadow mb-4" *ngFor="let account of dataFriends$ | async">
+          <mat-card-content>
+            <div class="d-flex align-items-center justify-content-between">
+              <img src="assets/images/profile/user-2.jpg" alt="User avatar" class="rounded-circle m-r-16" width="48" height="48">
+              <div class="ms-3 flex-grow-1">
+                <h3 class="mat-h3 mb-0">{{account.recipient_gmail}}</h3>
+                <div class="d-flex align-items-center">
+                  <span class="text-muted me-3 font-weight-bold m-r-16">{{account.total | number:'1.0-0' }} VND</span>
+                  <span class="text-muted me-3 font-weight-bold">5 % Save</span>
+                </div>
+              </div>
+              <div>
+                
+                <!-- <i-tabler (click)="cancelInvitation(account.recipient_gmail)" name="trash" class="icon-20 cursor-pointer hover-icon-trash"></i-tabler> -->
               </div>
             </div>
-            <div>
-              
-              <i-tabler (click)="cancelInvitation(account.recipient_gmail)" name="trash" class="icon-20 cursor-pointer hover-icon-trash"></i-tabler>
-            </div>
-          </div>
-        </mat-card-content>
-      </mat-card>
-
-      <iframe src="http://103.82.38.96:8065/" width="100%" height="auto"></iframe>
-    </div>
-
-    <!-- Right side: Subscription details -->
-    <div class="col-lg-4">
-      <mat-card class="cardWithShadow">
-        <mat-card-content>
-          <div class="d-flex justify-content-center mt-3">
-            <button mat-icon-button class="me-2">
-              <i-tabler name="device-tablet-plus" class="icon-30 cursor-pointer hover-icon-edit"></i-tabler>
-            </button>
-            
-            <button mat-icon-button>
-              <i-tabler name="edit" class="icon-30 cursor-pointer hover-icon-edit"></i-tabler>
-            </button>
-            <button mat-icon-button>
-              <i-tabler name="trash" class="icon-30 cursor-pointer hover-icon-trash"></i-tabler>
-            </button> 
-          </div>
-          <div class="text-center mb-4">
-            <img src="https://hoangphucphoto.com/wp-content/uploads/2024/02/anh-xe-2.jpeg" alt="Car" class="img-fluid mb-3" style="max-width: 300px; border-radius: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-          </div>
-          
-          <div class="text-center">
-            <h2 class="mat-h2">{{ (dataPlan$ | async)[0]?.price | number:'1.0-0' }} VNĐ</h2>
-            <p class="text-muted">{{ (dataPlan$ | async)[0]?.date_start }} — {{ (dataPlan$ | async)[0]?.date_end }}</p>
-            <p class="text-muted">5 % Save</p>
-          </div>
-
-          
-        </mat-card-content>
-      </mat-card>
-    </div>
-  </div>
-
-
+          </mat-card-content>
+        </mat-card>
   
+        
+      </div>
+  
+      <!-- Right side: Subscription details -->
+      <div class="col-lg-6">   
+        <div class="d-flex justify-content-start">
+          <button mat-button class="btn-primary btn-lg bg-primary text-white m-b-8" (click)="openDialogAddPlan()">
+            <i-tabler name="plus" class="icon-30 cursor-pointer hover-icon-edit"></i-tabler>
+          </button>
+        </div>
+  
+        <mat-accordion>
+          <mat-expansion-panel class="cardWithShadow" *ngFor="let plan of dataPlan$ | async">
+            <mat-expansion-panel-header style="height: 60px;">
+             
+              <mat-panel-title class="f-w-600 mat-body-1">
+                <img [src]="plan.image" alt="User avatar" class="rounded-circle m-r-16" width="48" height="48">
+                {{ plan.name }}
+                
+                <span class="text-muted m-l-16">{{ plan.price | number:'1.0-0' }} VNĐ</span>
+
+                <span class="text-muted m-l-16">{{ getRemainingDays(plan.date_end) }} days left</span>
+                
+                <button mat-icon-button>
+                  <i-tabler name="edit" class="icon-30 cursor-pointer hover-icon-edit"></i-tabler>
+                </button>
+                <button mat-icon-button (click)="deletePlan(plan._id, $event)">
+                  <i-tabler name="trash" class="icon-30 cursor-pointer hover-icon-trash" ></i-tabler>
+                </button> 
+              </mat-panel-title>
+              
+            </mat-expansion-panel-header>               
+                <div class="text-center mb-4">
+                  <img [src]="plan.image" 
+                  alt="Car" class="img-fluid mb-3" style="max-width: 300px; max-height: 300px; border-radius: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                </div>
+                
+                <div class="text-center">
+                  <h2 class="mat-h2">{{ plan.price | number:'1.0-0' }} VNĐ</h2>
+                  <p class="text-muted">{{ plan.date_start | date:'dd/MM/yyyy' }} — {{ plan.date_end | date:'dd/MM/yyyy' }}</p>
+                  <p class="text-muted">5 % Save</p>
+                </div>
+              
+          </mat-expansion-panel>
+          
+        </mat-accordion>
+  
+  
+        
+      </div>
+    </div>
+  
+  
+    
+  </div>
 </div>
 
 

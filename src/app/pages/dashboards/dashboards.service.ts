@@ -25,6 +25,38 @@ export class DashboardsService {
     public dataPlan$: Observable<any | null> =
         this.dataPlanDisplay.asObservable();
 
+    deletePlan(id: any) {
+        const headers = new HttpHeaders({
+            'Authorization': `Bearer ${localStorage.getItem('tokens')}`
+        });
+        const response = this.httpClient.post<any>(`${this.url}/auth/plan/delete`, { id }, { headers: headers });
+        return response.pipe(
+            map((res: any) => {
+                return res;
+            }),
+            catchError((error) => {
+                console.log(error.statusText);
+                return throwError(() => error);
+            })
+        )
+    }
+
+    createPlan(data: any) {
+        const headers = new HttpHeaders({
+            'Authorization': `Bearer ${localStorage.getItem('tokens')}`
+        });
+        const response = this.httpClient.post<any>(`${this.url}/auth/plan/create`, data, { headers: headers });
+        return response.pipe(
+            map((res: any) => {
+                return res;
+            }),
+            catchError((error) => {
+                console.log(error.statusText);
+                return throwError(() => error);
+            })
+        )
+    }
+
     getDataPlan() {
         const headers = new HttpHeaders({
             'Authorization': `Bearer ${localStorage.getItem('tokens')}`
@@ -197,5 +229,14 @@ export class DashboardsService {
     
     const response = this.httpClient.post<any>(`${this.url}/auth/verify-upload`, formData, { headers: headers });
     return response
+  }
+
+  uploadFile(file: File): Observable<string> {
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${localStorage.getItem('tokens')}`
+    });
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.httpClient.post<string>(`${this.url}/minio/file`, formData, { headers: headers });
   }
 }

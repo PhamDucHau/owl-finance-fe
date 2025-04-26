@@ -9,6 +9,7 @@ COPY package*.json package-lock.json ./
 
 # Cài đặt dependencies
 RUN npm install -g npm@10.2.3
+RUN npm install -g @angular/cli@18.0.4
 RUN yarn install
 
 # Sao chép toàn bộ mã nguồn vào thư mục làm việc
