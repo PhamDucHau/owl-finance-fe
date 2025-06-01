@@ -84,7 +84,7 @@ export class DialogUpImageTransactionComponent {
       category: [tran.type || '', Validators.required],
       product: [tran.description || '', [Validators.required]],
       quantity: [tran.quantity || '', [Validators.required]],
-      money: [tran.price || '', [Validators.required]],
+      money: [tran.total / tran.quantity || '', [Validators.required]],
       total: [tran.total || ''],
       brand: [this.data.brand || ''],
       logo: [this.data.logo || ''],

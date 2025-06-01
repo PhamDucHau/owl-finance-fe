@@ -336,8 +336,7 @@ export class AppDashboard1Component {
                 const transactionRequests = result.data.map((item: any) => {
                  
                   item.cardId = card._id;
-                  item.id = card._id;
-                  
+                  item.id = card._id;                 
                   
                   return this.service.createTransaction(item).pipe(
                     catchError(err => {
