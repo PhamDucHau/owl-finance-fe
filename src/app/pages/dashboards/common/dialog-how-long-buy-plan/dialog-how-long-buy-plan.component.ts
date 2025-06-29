@@ -1,7 +1,7 @@
 import { OverlayModule } from "@angular/cdk/overlay";
 import { CommonModule, DatePipe } from "@angular/common";
 import { Component, Inject } from "@angular/core";
-import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
+import { AbstractControl, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { MatCardModule } from "@angular/material/card";
@@ -22,7 +22,7 @@ import { id } from "date-fns/locale";
 
 @Component({
   // tslint:disable-next-line: component-selector
-  selector: 'app-dialog-up-image-transaction',
+  selector: 'app-dialog-how-long-buy-plan',
   standalone: true,
   imports: [
     MatDialogActions,
@@ -35,8 +35,7 @@ import { id } from "date-fns/locale";
     CommonModule,
     MatDividerModule,
     OverlayModule,
-    TablerIconsModule,
-    CommonModule,
+    TablerIconsModule,    
     ReactiveFormsModule,
     FormsModule,
     MatDividerModule,
@@ -45,60 +44,36 @@ import { id } from "date-fns/locale";
     MatProgressBarModule,
     MatIconModule,
     MaterialModule,
-
     MatFormFieldModule,
     MatInputModule,
     MatDatepickerModule,
 
   ],
-  templateUrl: 'dialog-up-image-transaction.component.html',
-  styleUrl: './dialog-up-image-transaction.component.scss',
-  
+  templateUrl: 'dialog-how-long-buy-plan.component.html',
+  styleUrl: './dialog-how-long-buy-plan.component.scss',
   providers: [DatePipe],
 })
 // tslint:disable-next-line: component-class-suffix
-export class DialogUpImageTransactionComponent {
+export class DialogHowLongBuyPlanComponent {
   public loadingSpinner = false;
-  transactionsForm: FormGroup;
+  planForm: FormGroup;
   
 
   constructor(
-    private service: DashboardsService,
+    
     public dialogRef: MatDialogRef<AppDialogOverviewComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private fb: FormBuilder
   ) {
-    this.transactionsForm = this.fb.group({
-      data: this.fb.array([]) // Khởi tạo FormArray rỗng
-    });
+    
+    
+    
+    
+    
+
+
+
   }
-
-  get transactions() {
-    return this.transactionsForm.get('data') as FormArray;
-  }
-
- 
-
-  createListTransaction(tran:any): FormGroup {
-    return this.fb.group({
-      category: [tran.type || '', Validators.required],
-      product: [tran.description || '', [Validators.required]],
-      quantity: [tran.quantity || '', [Validators.required]],
-      money: [tran.total / tran.quantity || '', [Validators.required]],
-      total: [tran.total || ''],
-      brand: [this.data.brand || ''],
-      logo: [this.data.logo || ''],
-    });
-  }
-
-  onSubmit() {
-    console.log(this.transactionsForm.value);
-    this.dialogRef.close(this.transactionsForm.value);
-  }
-
-  // addTransaction() {
-  //   this.transactions.push(this.createListTransaction());
-  // }
 
   cancle(): void {
     this.dialogRef.close(false);
@@ -111,25 +86,32 @@ export class DialogUpImageTransactionComponent {
 
   
   ngOnInit(): void {
-    this.populateForm();
-    console.log(this.data);
-    console.log('transactions', this.transactions);
+    this.planForm = this.fb.group({
+      product_name: ['', Validators.required],
+      price: ['', Validators.required],
+      salary_month: ['', [Validators.required]],
+      // how_long_buy: ['', [Validators.required]],
+      daily_expenses: ['', [Validators.required]],
+      
+    })
+  
+   
+
+
+
   }
 
-  populateForm() {
-    this.data.data.forEach((tran: any) => {
-      console.log('tran', tran);
-      this.transactions.push(this.createListTransaction(tran));
-    });
+  doAction() {
+    console.log(this.planForm.value);
+    console.log(this.planForm.valid);
+    this.dialogRef.close(this.planForm.value);
+  }
+  closeDialog(){
+    this.dialogRef.close(false);
   }
 
-  addTransaction() {
-    this.transactions.push(this.createListTransaction({}));
-  }
+  onSubmit(){}
 
-  removeTransaction(index: number) {
-    this.transactions.removeAt(index);
-  }
   
 
 

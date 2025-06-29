@@ -252,15 +252,27 @@
         @for(message of messagesAI; track message) {
           <div class="message" [ngClass]="{'message-me': message.sender === 'user', 'message-other': message.sender === 'AI'}">
             <div class="message-content">
-              <div class="message-text">{{message.content}}</div>
+              <div class="message-text" [innerHTML]="message.content"></div>
               <div class="message-time">{{message.timestamp | date:'shortTime'}}</div>
             </div>
           </div>
         }
       </div>
       <div class="chat-input d-flex align-items-center mt-16">
-        <mat-form-field class="w-100">
+        <!-- <mat-form-field class="w-100">
           <input matInput placeholder="Hỏi AI..." [(ngModel)]="aiMessageText" (keyup.enter)="sendAIMessage()">
+        </mat-form-field> -->
+
+        <mat-form-field class="w-100">
+          <!-- <ng-container *ngIf="!isSelectMode; else selectMode">
+            <input matInput placeholder="Hỏi AI..." [(ngModel)]="aiMessageText" (click)="toggleMode()" (keyup.enter)="sendAIMessage()">
+          </ng-container> -->
+        
+          
+            <mat-select placeholder="Hỏi AI..." [(ngModel)]="aiMessageText" (selectionChange)="onOptionSelected($event.value)" >              
+              <mat-option *ngFor="let option of aiOptions" [value]="option.value">{{ option.title }}</mat-option>
+            </mat-select>
+          
         </mat-form-field>
         
         <button mat-icon-button color="accent" class="ml-8" (click)="sendAIMessage()">

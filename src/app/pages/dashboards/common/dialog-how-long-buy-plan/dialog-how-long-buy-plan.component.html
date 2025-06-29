@@ -1,0 +1,140 @@
+
+<div class="bg-images">
+<div class="d-flex align-items-center justify-content-between">
+    <h2 class="f-w-500 m-b-8" mat-dialog-title><strong>{{data.title}} ?</strong></h2>
+    <button  mat-button class="m-r-16 button-close" (click)="closeDialog()">
+        X
+    </button>
+   
+</div>
+
+
+
+
+<mat-dialog-content style="max-width: 600px">
+    <img src="https://vanangroup.com.vn/wp-content/uploads/2024/05/Mau-lap-ke-hoach-kinh-doanh-khach-san-chi-tiet.jpg" 
+    alt="badge" height="200px" width="100%" class="m-b-8" style="border-radius: 4px ; border: 2px solid black; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);" />
+    <form [formGroup]="planForm" (ngSubmit)="onSubmit()">
+
+        <div class="row">
+            <div class="col-lg-6">
+              <mat-form-field appearance="outline" class="w-100">
+                
+                <input
+                  type="text"
+                  matInput
+                  required
+                  id="name"
+                  name="product_name"
+                  formControlName="product_name"
+                  placeholder="Tên sản phẩm"
+                />
+                <mat-icon matPrefix>
+                    <i-tabler style="color: orangered" name="brand-producthunt"  class="icon-26 d-flex"></i-tabler>
+                </mat-icon>
+              </mat-form-field>
+            </div>
+
+            <div class="col-lg-6">
+                <mat-form-field appearance="outline" class="w-100">
+                  <input
+                    type="text"
+                    matInput
+                    required
+                    id="price"
+                    name="price"
+                    formControlName="price"
+                    placeholder="Giá sản phẩm"
+                  />
+                  <mat-icon matPrefix>
+                    <i-tabler style="color: green" name="receipt-2"  class="icon-26 d-flex"></i-tabler>
+                </mat-icon>
+                </mat-form-field>
+            </div>
+
+            <div class="col-lg-6">
+                <mat-form-field appearance="outline" class="w-100">
+                  <input
+                    type="text"
+                    matInput
+                    required
+                    id="salary_month"
+                    name="salary_month"
+                    formControlName="salary_month"
+                    placeholder="Lương hiện tại"
+                  />
+                  <mat-icon matPrefix>
+                    <i-tabler style="color: orange" name="coin"  class="icon-26 d-flex"></i-tabler>
+                  </mat-icon>
+                </mat-form-field>
+            </div>
+
+            <!-- <div class="col-lg-6">
+                <mat-form-field appearance="outline" class="w-100">
+                  <input
+                    type="text"
+                    matInput
+                    required
+                    id="salary_month"
+                    name="salary_month"
+                    formControlName="how_long"
+                    placeholder="Thời gian sẽ mua"
+                  />
+                  <mat-icon matPrefix>
+                    <i-tabler style="color: red" name="clock-hour-3"  class="icon-26 d-flex"></i-tabler>
+                  </mat-icon>
+                </mat-form-field>
+            </div> -->
+
+            <div class="col-lg-6">
+                <mat-form-field appearance="outline" class="w-100">
+                  <input
+                    type="text"
+                    matInput
+                    required
+                    id="daily_expenses"
+                    name="daily_expenses"
+                    formControlName="daily_expenses"
+                    placeholder="Chi phí thường ngày"
+                  />
+                  <mat-icon matPrefix>
+                    <i-tabler style="color: #8e24aa" name="pacman"  class="icon-26 d-flex"></i-tabler>
+                  </mat-icon>
+                </mat-form-field>
+            </div>
+
+
+            
+          </div>
+      
+      <button
+        mat-flat-button
+        (click)="doAction()"
+        mat-flat-button
+        color="primary"
+        [disabled]="!planForm.valid"
+        
+      >
+        Save
+      </button>
+      <button
+        mat-stroked-button
+        color="warn"
+        class="m-l-8"
+        (click)="closeDialog()"
+      >
+        Cancel
+      </button>
+    </form>
+  </mat-dialog-content>
+
+
+
+
+
+
+
+  
+  
+  
+</div>
