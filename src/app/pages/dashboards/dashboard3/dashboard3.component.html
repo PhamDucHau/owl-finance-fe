@@ -1,0 +1,147 @@
+<div>
+    <div class="d-flex align-items-center justify-content-center text-white">
+        <div class="mat-subtitle-1" style="font-size: 24px">BẢNG XẾP HẠNG TIẾT KIỆM</div>
+    </div>
+
+    <div class="d-flex align-items-center justify-content-center">
+        <div class="tab-container mat-subtitle-1">
+            <button class="tab" [class.active]="activeTab === 'week'" (click)="setActiveTab('week')">
+                Tuần
+            </button>
+            <button class="tab" [class.active]="activeTab === 'month'" (click)="setActiveTab('month')">
+                Tháng
+            </button>
+            <button class="tab" [class.active]="activeTab === 'year'" (click)="setActiveTab('year')">
+                Năm
+            </button>
+        </div>
+    </div>
+
+    <div class="d-flex align-items-center justify-content-center">
+        <div class="content-table">
+            <div class="row">
+                <div class="col-4">
+                    <div class="border-right">
+                        <div class="d-flex align-items-center justify-content-center">
+                            <h1 style="color: #7f4ae0;" class="mat-subtitle-1">Target 3,000</h1>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-center">
+                            <img src="https://png.pngtree.com/png-clipart/20230402/original/pngtree-gold-medal-number-one-png-image_9018890.png"
+                                alt="Huy chương vàng" style="width: 350px; height: 350px" />
+                        </div>
+    
+                        <div class="d-flex align-items-center justify-content-start gap-12 m-l-24">
+                            <div>
+                                <img class="rounded-circle" src="assets/images/profile/user-2.jpg" width="60" />
+                            </div>
+                            <div>
+                                <div class="name-top mat-subtitle-1">A Nguyễn</div>
+                                <div class="price-top m-t-4 mat-subtitle-1">2,430</div>
+                            </div>   
+                        </div>
+                        <div class="d-flex align-items-center justify-content-start m-l-24">
+                            <h3 style="font-family: Plus Jakarta Sans;">Xem phân tích tiết kiệm của tôi</h3>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-8">
+                    <div class="border-left">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div class="d-flex align-items-end justify-content-start gap-12 ">
+                                <div>
+                                    <img class="rounded-circle" src="assets/images/profile/user-3.jpg" width="80" />
+                                    
+                                </div>
+                                <div>
+                                    <div class="price-top m-b-8" style="color: gray;font-family: Plus Jakarta Sans;">Top 6</div>
+                                    <div class="name-top m-b-8" style="font-family: Plus Jakarta Sans;">B Nguyễn</div>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-end justify-content-start gap-12 m-r-24">
+                                <div>
+                                    <div class="name-top m-b-8" style="color: orange;">1,000</div>
+                                </div>
+                                <div>
+                                    <img src="/assets/images/backgrounds/gold.png"
+                                alt="Huy chương vàng" style="width: 90px; height: 90px" />
+                                </div>
+                                
+                            </div>
+                        </div>
+                        
+                        <div class="m-t-24 main-list " >
+                            <div style="width: 100%; background-color: #7f4ae0;" class="contain-list-item">
+                                <div>
+                                    <img class="rounded-circle" src="assets/images/profile/user-3.jpg" width="60" />                                    
+                                </div>
+                                <div class="price-top"> User name </div>
+                                <div class="price-top"> User id </div>
+                                <div class="price-top"> Score </div>
+                                <div>
+                                    <img src="/assets/images/backgrounds/silver.png"
+                                alt="Huy chương vàng" style="width: 40px; height: 40px" />
+                                </div>
+
+                            </div>
+
+                            <div style="width: 100%; background-color: #f0eff3;" class="contain-list-item">
+                                <div>
+                                    <img class="rounded-circle" src="assets/images/profile/user-3.jpg" width="60" />                                    
+                                </div>
+                                <div class="price-top"> User name </div>
+                                <div class="price-top"> User id </div>
+                                <div class="price-top"> Score </div>
+                                <div>
+                                    <img src="/assets/images/backgrounds/bronze.png"
+                                alt="Huy chương vàng" style="width: 40px; height: 40px" />
+                                </div>
+
+                            </div>
+
+                            <div style="width: 100%; background-color: #f0eff3;" class="contain-list-item">
+                                <div>
+                                    <img class="rounded-circle" src="assets/images/profile/user-3.jpg" width="60" />                                    
+                                </div>
+                                <div class="price-top"> User name </div>
+                                <div class="price-top"> User id </div>
+                                <div class="price-top"> Score </div>
+                                <div>
+                                    <img src="/assets/images/backgrounds/bronze.png"
+                                alt="Huy chương vàng" style="width: 40px; height: 40px" />
+                                </div>
+
+                            </div>
+
+                            <div style="width: 100%; background-color: #f0eff3;" class="contain-list-item">
+                                <div>
+                                    <img class="rounded-circle" src="assets/images/profile/user-3.jpg" width="60" />                                    
+                                </div>
+                                <div class="price-top"> User name </div>
+                                <div class="price-top"> User id </div>
+                                <div class="price-top"> Score </div>
+                                <div>
+                                    <img src="/assets/images/backgrounds/bronze.png"
+                                alt="Huy chương vàng" style="width: 40px; height: 40px" />
+                                </div>
+
+                            </div>
+
+                         
+
+                           
+                            
+                        </div>
+
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+
+
+
+</div>

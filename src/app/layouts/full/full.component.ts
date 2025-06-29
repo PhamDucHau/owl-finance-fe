@@ -22,6 +22,9 @@ import { AppBreadcrumbComponent } from './shared/breadcrumb/breadcrumb.component
 import { CustomizerComponent } from './shared/customizer/customizer.component';
 import { FormsModule } from '@angular/forms';
 import { FullService } from './full.service';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogConfirmComponent } from 'src/app/pages/dashboards/common/dialog-confirm/dialog-confirm.component';
+import { DialogHowLongBuyPlanComponent } from 'src/app/pages/dashboards/common/dialog-how-long-buy-plan/dialog-how-long-buy-plan.component';
 
 const MOBILE_VIEW = 'screen and (max-width: 768px)';
 const TABLET_VIEW = 'screen and (min-width: 769px) and (max-width: 1024px)';
@@ -96,6 +99,16 @@ export class FullComponent implements OnInit, AfterViewChecked {
       isMe: false
     }
   ];
+  isSelectMode = false;
+
+  aiOptions: any[] = [
+    { title: 'Bao lâu tôi sẽ mua được', value: 'how-long-buy-plan' },
+   
+  ];
+
+toggleMode() {
+  this.isSelectMode = !this.isSelectMode;
+}
 
   @ViewChild('chatMessages') private chatMessages!: ElementRef;
 
@@ -231,7 +244,8 @@ export class FullComponent implements OnInit, AfterViewChecked {
     private router: Router,
     private breakpointObserver: BreakpointObserver,
     private navService: NavService,
-    private service: FullService
+    private service: FullService,
+    private dialog: MatDialog
   ) {
     this.htmlElement = document.querySelector('html')!;
     this.layoutChangesSubscription = this.breakpointObserver
@@ -260,6 +274,36 @@ export class FullComponent implements OnInit, AfterViewChecked {
 
   message$ = this.service.message$;
   messagesAI: any[] = [];
+
+  onOptionSelected(option: string) {
+    console.log('option', option);
+    const result = this.aiOptions.find(option => option.value === option.value);
+
+    console.log(result?.title); // 👉 'Bao lâu tôi sẽ mua được'
+    const data = {title: result?.title, value: option};
+    this.openDialogHowLongBuyPlan(data);
+  }
+  openDialogHowLongBuyPlan(data:any) {
+    const dialogRef = this.dialog.open(DialogHowLongBuyPlanComponent, {
+      data
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (!result) {
+        console.log('The dialog was closed1', result);
+        this.aiMessageText = '';
+      }
+      else {
+        console.log('The dialog was closed2', result);
+        this.aiMessageText = `Với mức lương ${result.salary_month} VND/tháng và chi phí sinh hoạt trung bình khoảng ${result.daily_expenses} VND/ngày, bạn nghĩ mình sẽ cần bao lâu để tiết kiệm đủ tiền mua ${result.product_name} có giá ${result.price} VND? Note: chỉ trả về những văn bản đơn giản dễ đọc thôi nhé, loại bỏ giúp tôi nhưng kí tự đặt biệt nhé`;
+        this.sendAIMessage();
+
+      }
+    });
+
+    
+  }
+  
 
   ngOnInit(): void {
     this.service.getMessage().subscribe()
